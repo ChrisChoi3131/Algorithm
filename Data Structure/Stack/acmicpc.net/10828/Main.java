@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 * not use library version 
 */
 
-public class Main {
+class Main {
     static final String inputFilePath = "./Data Structure/Stack/acmicpc.net/10828/sample.txt";
     static int stack[];
     static int size = 0;
