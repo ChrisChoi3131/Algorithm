@@ -44,8 +44,10 @@ int main(){
     string filePath = "./Data Structure/Stack/acmicpc.net/10828/sample.txt";
     ifstream openFile(filePath.data());
     string line;
+
     int index;
     cin >> index;
+    Stack stack;
     while(index--){
         string cmd;
         

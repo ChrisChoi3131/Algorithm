@@ -17,23 +17,23 @@ if (process.platform == "win32") {
         .split("\n");
 }
 
-class Stack{
+class Stack {
     constructor() {
-        this._array = [];        
+        this._array = [];
     }
-    push(item){
+    push(item) {
         this._array.push(item);
     }
-    pop(){
+    pop() {
         return this._array.pop();
     }
 }
 const T = inputArray[0];
 const stack = new Stack();
 
-for (let test_case = 1; test_case <= T; test_case++){
+for (let test_case = 1; test_case <= T; test_case++) {
     const element = inputArray[test_case].split(" ");
-    var tmp="";
+    var tmp = "";
     for (let i = 0; i < element.length; i++) {
         for (let j = 0; j < element[i].length; j++) {
             stack.push(element[i].charAt(j));
@@ -41,11 +41,9 @@ for (let test_case = 1; test_case <= T; test_case++){
         for (let j = 0; j < element[i].length; j++) {
             tmp = tmp + stack.pop();
         }
-        if(i!=element.length-1){
+        if (i != element.length - 1) {
             tmp = tmp + " ";
         }
     }
     console.log(tmp);
 }
-
-
