@@ -9,24 +9,31 @@ class Main {
     // static final String inputFilePath = "./˝˝˝˝˝˝
     // Structure/Stack/acmicpc.net/1406/sample.txt";
     static final String inputFilePath = "./# format/sample.txt";
+
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream(inputFilePath));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int T = Integer.parseInt(br.readLine());
-        for (int test_case = 1; test_case <= T; test_case++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            System.out.println((a*b)/gdc(a,b));
+        int N = Integer.parseInt(br.readLine());
+        int answer = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            if(isPrime(Integer.parseInt(st.nextToken()))){
+                answer++;
+            }
         }
+        System.out.println(answer);
     }
 
-    static int gdc(int a, int b){
-        if(b==0){
-            return a;
-        }else{
-            return gdc(b,a%b);
+    static boolean isPrime(int n) {
+        if (n<2){
+            return false;
         }
+        for (int i = 2; i*i<= n; i++) {
+            if(n%i==0){
+                return false;
+            }
+        }
+        return true;
     }
 }
