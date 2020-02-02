@@ -15,30 +15,31 @@ class Main {
         System.setIn(new FileInputStream(inputFilePath));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int T = Integer.parseInt(br.readLine());
-        for (int test_case = 1; test_case <= T; test_case++) {
-            ArrayList<Integer> al = new ArrayList<Integer>();
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int N = Integer.parseInt(st.nextToken());
-            while(st.hasMoreTokens()){
-                al.add(Integer.parseInt(st.nextToken()));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int S = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        int arr[] = new int[N];
+        int i = 0;
+        while (st.hasMoreTokens()) {
+            arr[i++] = Math.abs(S - Integer.parseInt(st.nextToken()));
+        }
+        int min = arr[0];
+        for (int j = 0; j < N - 1; j++) {
+            int gdc = gdc(arr[j], arr[j + 1]);
+            if (min > gdc) {
+                min = gdc;
             }
-            long ans = 0;
-            for (int i = 0; i < al.size()-1; i++) {
-                for (int j = i+1; j < al.size(); j++) {
-                    if(i != j){
-                        ans+= gdc(al.get(i), al.get(j));
-                    }
-                }
-            }
-            System.out.println(ans);
-        }        
+        }
+        System.out.println(min);
     }
-    static int gdc (int a, int b){
-        if(b==0){
-            return a;
-        }else{
-            return gdc(b, a%b);
+
+    static int gdc(int a, int b) {
+        if (a % b == 0) {
+            return b;
+        } else {
+            return gdc(b, a % b);
         }
     }
+
 }
