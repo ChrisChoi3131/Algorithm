@@ -31,6 +31,6 @@ class Main {
                 }
             }
         }
-        System.out.println(d[K][K]);
+        System.out.println(d[K][N]);
     }
 }
