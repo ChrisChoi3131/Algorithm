@@ -1,6 +1,3 @@
-.vscode/launch.json
-Data Structure/Stack/acmicpc.net/10828/Main.out
-Data Structure/Stack/acmicpc.net/10828/Main.out.dSYM/Contents/Resources/DWARF/Main.out
-Data Structure/Stack/acmicpc.net/10828/Main.out.dSYM/Contents/Info.plist
---debug
-Data Structure/Stack/acmicpc.net/9093/Main.class
+*.out
+*.plist
+*.class
