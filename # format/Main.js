@@ -5,4 +5,4 @@ var input = require("fs")
   .toString()
   .trim()
   .split("\n");
-console.log(inputArray);
+console.log(input);
