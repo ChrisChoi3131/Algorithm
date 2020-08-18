@@ -23,44 +23,44 @@ class Main {
         for (int i = 0; i < N; i++) {
             String line = br.readLine();
             for (int j = 0; j < a.length; j++) {
-                a[i][j] = line.substring(j,j+1);
+                a[i][j] = line.substring(j, j + 1);
             }
         }
         int max = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 String tmp = "";
-                if(j!=N-1){
+                if (j != N - 1) {
                     tmp = a[i][j];
-                    a[i][j] = a[i][j+1];
-                    a[i][j+1] = tmp;
-                    if(max<countCandy(i, j)){
+                    a[i][j] = a[i][j + 1];
+                    a[i][j + 1] = tmp;
+                    if (max < countCandy(i, j)) {
                         max = countCandy(i, j);
                     }
-                    if(max<countCandy(i, j+1)){
-                        max = countCandy(i, j+1);
+                    if (max < countCandy(i, j + 1)) {
+                        max = countCandy(i, j + 1);
                     }
                     tmp = a[i][j];
-                    a[i][j] = a[i][j+1];
-                    a[i][j+1] = tmp;
+                    a[i][j] = a[i][j + 1];
+                    a[i][j + 1] = tmp;
                 }
-                if(i!=N-1){
+                if (i != N - 1) {
                     tmp = a[i][j];
-                    a[i][j] = a[i+1][j];
-                    a[i+1][j] = tmp;
-                    if(max<countCandy(i, j)){
+                    a[i][j] = a[i + 1][j];
+                    a[i + 1][j] = tmp;
+                    if (max < countCandy(i, j)) {
                         max = countCandy(i, j);
                     }
-                    if(max<countCandy(i+1, j)){
-                        max = countCandy(i+1, j);
+                    if (max < countCandy(i + 1, j)) {
+                        max = countCandy(i + 1, j);
                     }
                     tmp = a[i][j];
-                    a[i][j] = a[i+1][j];
-                    a[i+1][j] = tmp;
-                }    
-                if(max<countCandy(i, j)){
+                    a[i][j] = a[i + 1][j];
+                    a[i + 1][j] = tmp;
+                }
+                if (max < countCandy(i, j)) {
                     max = countCandy(i, j);
-                }            
+                }
             }
         }
         System.out.println(max);
@@ -82,7 +82,7 @@ class Main {
         }
         int rowCount[] = new int[4];
         for (int i = 1; i < N; i++) {
-            if(!a[row][i].equals(a[row][i-1])){
+            if (!a[row][i].equals(a[row][i - 1])) {
                 yCount = 0;
                 cCount = 0;
                 pCount = 0;
@@ -90,22 +90,22 @@ class Main {
             }
             if (a[row][i].equals("Y")) {
                 yCount++;
-                if(rowCount[0]< yCount){
+                if (rowCount[0] < yCount) {
                     rowCount[0] = yCount;
                 }
             } else if (a[row][i].equals("C")) {
                 cCount++;
-                if(rowCount[1]< cCount){
+                if (rowCount[1] < cCount) {
                     rowCount[1] = cCount;
                 }
             } else if (a[row][i].equals("P")) {
                 pCount++;
-                if(rowCount[2]< pCount){
+                if (rowCount[2] < pCount) {
                     rowCount[2] = pCount;
                 }
             } else if (a[row][i].equals("Z")) {
                 zCount++;
-                if(rowCount[3]< zCount){
+                if (rowCount[3] < zCount) {
                     rowCount[3] = zCount;
                 }
             }
@@ -127,7 +127,7 @@ class Main {
         }
         int colCount[] = new int[4];
         for (int i = 1; i < N; i++) {
-            if(!a[i][col].equals(a[i-1][col])){
+            if (!a[i][col].equals(a[i - 1][col])) {
                 yCount = 0;
                 cCount = 0;
                 pCount = 0;
@@ -135,22 +135,22 @@ class Main {
             }
             if (a[i][col].equals("Y")) {
                 yCount++;
-                if(colCount[0]< yCount){
+                if (colCount[0] < yCount) {
                     colCount[0] = yCount;
                 }
             } else if (a[i][col].equals("C")) {
                 cCount++;
-                if(colCount[1]< cCount){
+                if (colCount[1] < cCount) {
                     colCount[1] = cCount;
                 }
             } else if (a[i][col].equals("P")) {
                 pCount++;
-                if(colCount[2]< pCount){
+                if (colCount[2] < pCount) {
                     colCount[2] = pCount;
                 }
             } else if (a[i][col].equals("Z")) {
                 zCount++;
-                if(colCount[3]< zCount){
+                if (colCount[3] < zCount) {
                     colCount[3] = zCount;
                 }
             }
