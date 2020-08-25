@@ -12,7 +12,6 @@ class Main {
     static boolean brokenBtn[] = new boolean[10];
 
     public static void main(String[] args) throws Exception {
-        System.out.println(System.getProperty("user.dir"));
         System.setIn(new FileInputStream(inputFilePath));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -26,6 +25,28 @@ class Main {
         if (ans < 0) {
             ans = -ans;
         }
+        for (int i = 0; i <= 1000000; i++) {
+            if (possible(i)) {
+                if (ans > Math.abs(i - N) + String.valueOf(i).length()) {
+                    ans = Math.abs(i - N) + String.valueOf(i).length();
+                }
+            }
+        }
+        System.out.println(ans);
+    }
 
+    public static boolean possible(int num) {
+        if (num == 0) {
+            if (brokenBtn[0]) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if (brokenBtn[num % 10]) {
+            return false;
+        } else {
+            return possible(num / 10);
+        }
     }
 }
