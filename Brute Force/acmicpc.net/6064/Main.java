@@ -19,12 +19,12 @@ class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int M = Integer.parseInt(st.nextToken());
             int N = Integer.parseInt(st.nextToken());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken()) - 1;
+            int y = Integer.parseInt(st.nextToken()) - 1;
             boolean isValid = false;
             for (int k = x; k <= (M * N); k += M) {
                 if (k % N == y) {
-                    System.out.println(k);
+                    System.out.println(k + 1);
                     isValid = true;
                     break;
                 }
