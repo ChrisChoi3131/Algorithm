@@ -7,8 +7,6 @@ import java.util.StringTokenizer;
 
 class Main {
     static final String inputFilePath = "./Dynamic Programming/acmicpc.net/11726/sample.txt";
-    // static final int mod = 1000000000;
-    // static final String inputFilePath = "./# format/sample.txt";
 
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream(inputFilePath));
