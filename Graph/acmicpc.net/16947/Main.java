@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Main {
@@ -31,6 +33,28 @@ class Main {
             a[y].add(x);
         }
         go(0, -1);
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < N; i++) {
+            if (check[i] == 2) {
+                dist[i] = 0;
+                q.add(i);
+            } else {
+                dist[i] = -1;
+            }
+        }
+        while (!q.isEmpty()) {
+            int x = q.remove();
+            for (int y : a[x]) {
+                if (dist[y] == -1) {
+                    q.add(y);
+                    dist[y] = dist[x] + 1;
+                }
+            }
+        }
+        for (int i = 0; i < N; i++) {
+            System.out.print(dist[i] + " ");
+        }
+        System.out.println();
     }
 
     public static int go(int x, int px) {
@@ -38,7 +62,20 @@ class Main {
             return x;
         }
         check[x] = 1;
-
+        for (int y : a[x]) {
+            if (y == px)
+                continue;
+            int res = go(y, x);
+            if (res == -2)
+                return -2;
+            if (res >= 0) {
+                check[x] = 2;
+                if (x == res)
+                    return -2;
+                else
+                    return res;
+            }
+        }
         return -1;
     }
 }
