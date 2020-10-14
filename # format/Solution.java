@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 class Solution {
-  static final String inputFilePath = "./Math, Logical Implememt/Etc/SDS/sample.txt";
+  static final String inputFilePath = "./SDS/sample.txt";
 
   public static void main(String[] args) throws Exception {
     System.setIn(new FileInputStream(inputFilePath));
