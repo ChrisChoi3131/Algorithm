@@ -7,7 +7,7 @@ import java.util.*;
 
 class Main {
   static final String inputFilePath = "./Graph/acmicpc.net/BFS/13549/sample.txt";
-  static final int length = 100001;
+  static final int length = 1000000;
   public static void main(String[] args) throws Exception {
     System.setIn(new FileInputStream(inputFilePath));
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,30 +16,38 @@ class Main {
     int n = Integer.parseInt(st.nextToken());
     int k = Integer.parseInt(st.nextToken());
     int[] check = new int[length];
-
-    Queue<Integer> q = new LinkedList<Integer>();
-    q.add(n);
-    check[n] = 1;
-    while (!q.isEmpty()) {
-      int now = q.remove();
-      if (2 * now < length && check[2 * now] == 0) {
-        check[2 * now] = check[now];
-        q.add(2 * now);
-      }
-      if (now - 1 >= 0 && now +1 < length) {
-        if (check[now - 1] == 0) {
-          check[now - 1] = check[now] + 1;
-          q.add(now - 1);
-        }
-        if (check[now + 1] == 0) {
-          check[now + 1] = check[now] + 1;
-          q.add(now + 1);
-        }
-      }
-      if (now == k) {
+    Arrays.fill(check, -1);
+    Queue<Integer> q1 = new LinkedList<Integer>();
+    Queue<Integer> q2 = new LinkedList<Integer>();
+    q1.add(n);
+    check[n] = 0;
+    int range = 0;
+    for (int i = 0; i < length; i++) {
+      if (Math.pow(2, i) * n > k) {
+        range = (int) Math.pow(2, i) * n;
         break;
       }
     }
-    System.out.println(check[k]-1);
+    while (!q1.isEmpty()) {
+      int now = q1.remove();
+      if (now * 2 < length && (check[now * 2] == -1|| check[now *2] > check[now])) {
+        q1.add(now * 2);
+        check[now * 2] = check[now];
+      }
+      if (now - 1 >= 0 && check[now - 1] == -1) {
+        q2.add(now - 1);
+        check[now - 1] = check[now] + 1;
+      }
+      if (now + 1 < length && check[now + 1] == -1) {
+        q2.add(now + 1);
+        check[now + 1] = check[now] + 1;
+      }
+      if (q1.isEmpty()) {
+        q1 = q2;
+        q2 = new LinkedList<Integer>();
+      }
+    }
+    System.out.println(check[k]);
+
   }
 }
