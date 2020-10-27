@@ -8,31 +8,34 @@ import java.util.*;
 class Main {
   static final String inputFilePath = "./Graph/acmicpc.net/Tree/acmicpc.net/1991/sample.txt";
 
-  static void preorder(Node[] a, int x) {
-    if (x == -1) {
-      return;
+  static void preorder(Node a[], int p) {
+    System.out.print((char) (p + 'A'));
+    if (a[p].left != -1) {
+      preorder(a, a[p].left);
     }
-    System.out.print((char) (x + 'A'));
-    preorder(a, a[x].left);
-    preorder(a, a[x].right);
+    if (a[p].right != -1) {
+      preorder(a, a[p].right);
+    }
   }
 
-  static void inorder(Node[] a, int x) {
-    if (x == -1) {
-      return;
+  static void inorder(Node a[], int p) {
+    if (a[p].left != -1) {
+      inorder(a, a[p].left);
     }
-    inorder(a, a[x].left);
-    System.out.print((char) (x + 'A'));
-    inorder(a, a[x].right);
+    System.out.print((char) (p + 'A'));
+    if (a[p].right != -1) {
+      inorder(a, a[p].right);
+    }
   }
 
-  static void postorder(Node[] a, int x) {
-    if (x == -1) {
-      return;
+  static void postorder(Node a[], int p) {
+    if (a[p].left != -1) {
+      postorder(a, a[p].left);
     }
-    postorder(a, a[x].left);
-    postorder(a, a[x].right);
-    System.out.print((char) (x + 'A'));
+    if (a[p].right != -1) {
+      postorder(a, a[p].right);
+    }
+    System.out.print((char) (p + 'A'));
   }
 
   public static void main(String[] args) throws Exception {
@@ -68,7 +71,7 @@ class Main {
 class Node {
   int left, right;
 
-  Node(int left, int right) {
+  public Node(int left, int right) {
     this.left = left;
     this.right = right;
   }
