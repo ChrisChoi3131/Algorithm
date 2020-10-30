@@ -51,7 +51,6 @@ class Main {
       char z = st.nextToken().charAt(0);
       int left = -1;
       int right = -1;
-
       if (y != '.') {
         left = y - 'A';
       }
