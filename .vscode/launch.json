@@ -9,13 +9,6 @@
       "projectName": "algorithm_a1b1b10b"
     },
     {
-      "type": "java",
-      "name": "CodeLens (Launch) - Main",
-      "request": "launch",
-      "mainClass": "Main",
-      "projectName": "algorithm_a1b1b10b"
-    },
-    {
       "type": "node",
       "request": "launch",
       "name": "Javascript",
@@ -26,7 +19,12 @@
       "name": "Java Launch - Current File",
       "request": "launch",
       "mainClass": "${file}",
-      "console": "internalConsole"
+      "console": "internalConsole",
+      "vmArgs": [
+        "-Xmx5024m",
+        "-Xms256m",
+        "-Xss5m"
+      ]
     },
     {
       "name": "C++ Launch",
