@@ -6,6 +6,13 @@
       "name": "CodeLens (Launch) - Solution",
       "request": "launch",
       "mainClass": "Solution",
+      "projectName": "Algorithm_2c75b5eb"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Solution",
+      "request": "launch",
+      "mainClass": "Solution",
       "projectName": "algorithm_a1b1b10b"
     },
     {
