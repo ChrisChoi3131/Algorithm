@@ -7,45 +7,69 @@ public class Main {
   static long startTime, EndTime, timeDiff;
   static StringTokenizer st;
   static int inCnt[];
-  static int n, m;
-  static ArrayList<Integer> a[];
+  static int costArr[];
+  static int check[];
+  static int n;
+  static ArrayList<Edge> a[];
 
   public static void main(String[] args) throws Exception {
     System.setIn(new FileInputStream(inputFilePath));
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-    st = new StringTokenizer(br.readLine());
-    n = Integer.parseInt(st.nextToken());
-    m = Integer.parseInt(st.nextToken());
+    n = Integer.parseInt(br.readLine());
     inCnt = new int[n + 1];
+    costArr = new int[n + 1];
+    check = new int[n + 1];
     a = new ArrayList[n + 1];
     for (int i = 0; i <= n; i++) {
-      a[i] = new ArrayList<Integer>();
+      a[i] = new ArrayList<Edge>();
     }
-    for (int i = 0; i < m; i++) {
+    for (int i = 1; i <= n; i++) {
       st = new StringTokenizer(br.readLine());
-      int x = Integer.parseInt(st.nextToken());
-      int y = Integer.parseInt(st.nextToken());
-      a[x].add(y);
-      inCnt[y]++;
+      int cost = Integer.parseInt(st.nextToken());
+      int numOfConnected = Integer.parseInt(st.nextToken());
+      for (int j = 0; j < numOfConnected; j++) {
+        int x = Integer.parseInt(st.nextToken());
+        a[x].add(new Edge(x, i, cost));
+        inCnt[i]++;
+      }
+      costArr[i] = cost;
     }
-    Queue<Integer> q = new LinkedList<Integer>();
+    Queue<Edge> q = new LinkedList<Edge>();
     for (int i = 1; i <= n; i++) {
       if (inCnt[i] == 0) {
-        q.add(i);
+        q.offer(new Edge(i, i, costArr[i]));
+        check[i] = costArr[i];
       }
     }
     while (!q.isEmpty()) {
-      int curr = q.remove();
-      bw.write(curr + " ");
-      for (int i = 0; i < a[curr].size(); i++) {
-        int next = a[curr].get(i);
-        inCnt[next]--;
-        if (inCnt[next] == 0)
-          q.add(next);
+      Edge curr = q.poll();
+      for (int i = 0; i < a[curr.e].size(); i++) {
+        Edge next = a[curr.e].get(i);
+        inCnt[next.e]--;
+        if (inCnt[next.e] == 0) {
+          q.offer(next);
+        }
+        if (check[next.e] < check[next.s] + next.cost) {
+          check[next.e] = check[next.s] + next.cost;
+        }
       }
     }
-    bw.flush();
+    int ans = 0;
+    for (int i = 1; i <= n; i++) {
+      if (check[i] > ans)
+        ans = check[i];
+    }
+    System.out.println(ans);
+  }
+}
+
+class Edge {
+  int s, e, cost;
+
+  public Edge(int s, int e, int cost) {
+    this.s = s;
+    this.e = e;
+    this.cost = cost;
   }
 }
