@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -8,20 +6,21 @@ public class Main {
   static final String inputFilePath = "./# ing/acmicpc.net/sample.txt";
   static long startTime, EndTime, timeDiff;
   static StringTokenizer st;
-  static int p[];
-  static int cnt[];
-  static boolean visited[];
+  static int inCnt[];
+  static int n, m;
   static ArrayList<Integer> a[];
 
   public static void main(String[] args) throws Exception {
     System.setIn(new FileInputStream(inputFilePath));
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
     st = new StringTokenizer(br.readLine());
-    int n = Integer.parseInt(st.nextToken());
-    int m = Integer.parseInt(st.nextToken());
+    n = Integer.parseInt(st.nextToken());
+    m = Integer.parseInt(st.nextToken());
+    inCnt = new int[n + 1];
     a = new ArrayList[n + 1];
-    cnt = new int[n + 1];
-    for (int i = 1; i <= n; i++) {
+    for (int i = 0; i <= n; i++) {
       a[i] = new ArrayList<Integer>();
     }
     for (int i = 0; i < m; i++) {
@@ -29,37 +28,24 @@ public class Main {
       int x = Integer.parseInt(st.nextToken());
       int y = Integer.parseInt(st.nextToken());
       a[x].add(y);
+      inCnt[y]++;
     }
-    for (int i = 1; i <= n; i++) {
-      visited = new boolean[n + 1];
-      bfs(i);
-    }
-    int ans = 0;
-    for (int i = 1; i <= n; i++) {
-      if (cnt[i] == n - 1)
-        ans++;
-    }
-    System.out.println(ans);
-  }
-
-  static void bfs(int node) {
     Queue<Integer> q = new LinkedList<Integer>();
-    q.add(node);
-    visited[node] = true;
-    int count = 0;
-    while (!q.isEmpty()) {
-      int now = q.remove();
-      for (int i = 0; i < a[now].size(); i++) {
-        int child = a[now].get(i);
-        if (!visited[child]) {
-          cnt[child]++;
-          count++;
-          q.add(child);
-          visited[child] = true;
-        }
+    for (int i = 1; i <= n; i++) {
+      if (inCnt[i] == 0) {
+        q.add(i);
       }
     }
-    cnt[node] += count;
+    while (!q.isEmpty()) {
+      int curr = q.remove();
+      bw.write(curr + " ");
+      for (int i = 0; i < a[curr].size(); i++) {
+        int next = a[curr].get(i);
+        inCnt[next]--;
+        if (inCnt[next] == 0)
+          q.add(next);
+      }
+    }
+    bw.flush();
   }
-
 }
