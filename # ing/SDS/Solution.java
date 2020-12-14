@@ -1,21 +1,30 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Solution {
   static boolean debugMod = false;
-  static final String inputFilePath = "./# ing SDS/sample.txt";
+  static final String inputFilePath = "./# ing/SDS/sample.txt";
   static long startTime, EndTime, timeDiff;
   static StringTokenizer st;
+  static int n, m;
+  static ArrayList<Integer> a[];
+  static int d[];
+  static int par[];
+  static int p[][];
+  static int h[];
+  static int LOG = 17;
 
   public static void main(String[] args) throws Exception {
+    startTime = System.currentTimeMillis();
     System.setIn(new FileInputStream(inputFilePath));
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     int t = Integer.parseInt(br.readLine());
-    for (int test_case = 1; test_case <= t; test_case++) {
+    for (int tc = 1; tc <= t; tc++) {
       st = new StringTokenizer(br.readLine());
-      System.out.println("#" + test_case + " ");
+      n = Integer.parseInt(st.nextToken());
     }
+    EndTime = System.currentTimeMillis();
+    // System.out.println("걸린시간 ms : " + (EndTime - startTime));
   }
 }
