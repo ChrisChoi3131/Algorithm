@@ -2,27 +2,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "CodeLens (Launch) - Main",
-      "request": "launch",
-      "mainClass": "Main",
-      "projectName": "Algorithm_2c75b5eb"
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - Solution",
-      "request": "launch",
-      "mainClass": "Solution",
-      "projectName": "Algorithm_2c75b5eb"
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - Solution",
-      "request": "launch",
-      "mainClass": "Solution",
-      "projectName": "algorithm_a1b1b10b"
-    },
-    {
       "type": "node",
       "request": "launch",
       "name": "Javascript",
@@ -34,23 +13,16 @@
       "request": "launch",
       "mainClass": "${file}",
       "console": "internalConsole",
-      "vmArgs": [
-        "-Xmx5024m",
-        "-Xms256m",
-        "-Xss5m"
-      ]
+      "vmArgs": ["-Xmx5024m", "-Xms256m", "-Xss5m"]
     },
     {
-      "name": "C++ Launch",
-      "type": "cppdbg",
+      "type": "lldb",
       "request": "launch",
-      "program": "${fileDirname}/${fileBasenameNoExtension}.out",
+      "name": "C++ debug",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
       "args": [],
-      "stopAtEntry": true,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb"
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "C++ bulid for clang++"
     }
   ]
 }
