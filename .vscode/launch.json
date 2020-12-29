@@ -2,6 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "python",
+      "name": "Python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "internalConsole"
+
+      // "preLaunchTask": "python execute"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Javascript",
