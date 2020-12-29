@@ -2,3 +2,5 @@
 *.plist
 *.class
 node_modules
+*.dSYM
+Main
