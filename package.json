@@ -1,0 +1,22 @@
+{
+  "name": "algorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisChoi3131/Algorithm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrisChoi3131/Algorithm/issues"
+  },
+  "homepage": "https://github.com/ChrisChoi3131/Algorithm#readme",
+  "devDependencies": {
+    "eslint": "^7.21.0"
+  }
+}
