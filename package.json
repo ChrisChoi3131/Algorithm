@@ -16,7 +16,8 @@
     "url": "https://github.com/ChrisChoi3131/Algorithm/issues"
   },
   "homepage": "https://github.com/ChrisChoi3131/Algorithm#readme",
-  "devDependencies": {
-    "eslint": "^7.21.0"
+  "dependencies": {
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
   }
 }

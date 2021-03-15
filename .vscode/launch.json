@@ -11,10 +11,11 @@
       // "preLaunchTask": "python execute"
     },
     {
-      "type": "node",
+      "name": "JavaScript",
+      "program": "${file}",
       "request": "launch",
-      "name": "Javascript",
-      "program": "${file}"
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     },
     {
       "type": "java",
