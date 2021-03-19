@@ -1,41 +1,42 @@
 const inputFilePath = "/sample.txt";
-let input = require("fs").readFileSync(__dirname + inputFilePath);
-// let input = require("fs").readFileSync('/dev/stdin');
-input = input.toString().trim().split("\n");
-let firstLine = input[0].split(" ");
-const N = Number(firstLine[0]);
-const M = Number(firstLine[1]);
-let array = input[1].split(" ").map(x => Number(x)).sort((a, b) => a - b);
-array = cal(array);
-let c = array[1];
-array = array[0];
-let a = [];
-let ans = [];
-go(0, 0);
-console.log(ans.join("\n"));
-
-function cal(array) {
-  let a = [], b = [], prev;
-  for (let i = 0; i < array.length; i++) {
-    if (array[i] !== prev) {
-      a.push(array[i]);
-      b.push(1);
-    } else {
-      b[b.length - 1]++;
-    }
-    prev = array[i];
-  }
-  return [a, b];
+let input = require("fs").readFileSync(__dirname + inputFilePath).toString().trim().split("\n");
+// let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
+const [N, M, V] = input[0].split(" ").map(Number);
+let list = Array.from(Array(N + 1), () => []);
+for (let i = 1; i <= M; i++) {
+  const [x, y] = input[i].split(" ").map(Number);
+  list[x].push(y);
+  list[y].push(x);
 }
-
-function go(index, start) {
-  if (index === M) {
-    ans.push(a.join(" "));
-    return;
+list.forEach(element => element.sort((a, b) => a - b));
+let c = Array(N + 1).fill(false);
+let dfsRes = [];
+dfs(V);
+let bfsRes = [];
+c = Array(N + 1).fill(false);
+bfs(V);
+console.log(dfsRes.join(" "));
+console.log(bfsRes.join(" "));
+function dfs(node) {
+  if (c[node] === true) return;
+  dfsRes.push(node);
+  c[node] = true;
+  for (const next of list[node]) {
+    if (c[next] === false) dfs(next);
   }
-  for (let i = 0; i < array.length; i++) {
-    if (index > 0 && a[index - 1] > array[i]) continue;
-    a[index] = array[i];
-    go(index + 1);
+}
+function bfs(start) {
+  let queue = [];
+  queue.push(start);
+  c[start] = true;
+  while (queue.length) {
+    let node = queue.shift();
+    bfsRes.push(node);
+    for (const next of list[node]) {
+      if (c[next] === false) {
+        queue.push(next);
+        c[next] = true;
+      }
+    }
   }
 }
