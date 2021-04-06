@@ -12,7 +12,7 @@ for (let i = 1; i <= M; i++) {
 let c = Array.from(Array(N + 1), () => false);
 let groups = Array.from(Array(N + 1), () => 0);
 for (let i = 1; i <= N; i++) {
-  dfs(i, i);
+  if (!c[i]) dfs(i, i);
 }
 let counts = {};
 for (let i = 1; i < groups.length; i++) {
