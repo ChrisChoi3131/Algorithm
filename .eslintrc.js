@@ -7,14 +7,17 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  extends: ["plugin:prettier/recommended"],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   plugins: ["prettier"],
   rules: {
     "prettier/prettier": [
       "error",
-      { singleQuote: false, useTabs: false, tabWidth: 2 },
+      {
+        printWidth: 120,
+        singleQuote: false,
+        useTabs: false,
+        tabWidth: 2,
+      },
     ],
-    "arrow-body-style": "off",
-    "prefer-arrow-callback": "off",
   },
 };
