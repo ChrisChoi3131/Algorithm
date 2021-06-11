@@ -5,16 +5,16 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: 'module',
+    sourceType: "module",
   },
-  extends: ['plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  extends: ["plugin:prettier/recommended"],
+  plugins: ["prettier"],
   rules: {
-    'prettier/prettier': [
-      'error',
-      { singleQuote: true, useTabs: false, tabWidth: 2 },
+    "prettier/prettier": [
+      "error",
+      { singleQuote: false, useTabs: false, tabWidth: 2 },
     ],
-    'arrow-body-style': 'off',
-    'prefer-arrow-callback': 'off',
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
   },
 };
