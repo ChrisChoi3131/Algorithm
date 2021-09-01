@@ -8,15 +8,27 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
 
-const N = input[0];
+const T = input[0];
 const ans = [];
-for (let i = 1; i <= N; i++) {
-  const s = input[i].split(" ");
-  const reverseS = [];
-  s.forEach((element) => {
-    reverseS.push(element.split("").reverse().join(""));
-  });
-  ans.push(reverseS.join(" "));
+outer: for (let i = 1; i <= T; i++) {
+  const ps = input[i].split("");
+  const left = [];
+  for (const ele of ps) {
+    if (ele === "(") {
+      left.push(ele);
+    } else {
+      if (left.length === 0) {
+        ans.push("NO");
+        continue outer;
+      } else {
+        left.pop();
+      }
+    }
+  }
+  if (left.length === 0) {
+    ans.push("YES");
+  } else {
+    ans.push("NO");
+  }
 }
-
 console.log(ans.join("\n"));
