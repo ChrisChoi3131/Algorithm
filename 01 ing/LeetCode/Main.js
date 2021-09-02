@@ -1,17 +1,17 @@
 "use strict";
 const inputFilePath = "/sample.txt";
-// const input = require("fs")
-//   .readFileSync(__dirname + inputFilePath)
-//   .toString()
-//   .trim()
-//   .split("\n");
-const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
+const input = require("fs")
+  .readFileSync(__dirname + inputFilePath)
+  .toString()
+  .trim()
+  .split("\n");
+// const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
 
 const N = input[0];
 const stack = [];
 const ans = [];
 
-for (let i = 1; i < input.length; i++) {
+for (let i = 1; i < N; i++) {
   const element = input[i].split(" ");
   if (element[0] === "push") {
     stack.push(element[1]);
