@@ -8,21 +8,39 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
 
-const left = input[0].split("");
-const right = [];
-const n = input[1];
-for (let i = 0; i < n; i++) {
-  const cmd = input[i + 2].split(" ");
-  if (cmd[0] === "P") {
-    left.push(cmd[1]);
-  } else if (cmd[0] === "L" && left.length !== 0) {
-    right.push(left.pop());
-  } else if (cmd[0] === "D" && right.length !== 0) {
-    left.push(right.pop());
-  } else if (cmd[0] === "B" && left.length !== 0) {
-    left.pop();
+const N = input[0];
+const queue = [];
+const ans = [];
+for (let i = 1; i <= N; i++) {
+  const cmd = input[i].split(" ");
+  if (cmd[0] === "push") {
+    queue.unshift(cmd[1]);
+  } else if (cmd[0] === "pop") {
+    if (queue.length !== 0) {
+      ans.push(queue.pop());
+    } else {
+      ans.push(-1);
+    }
+  } else if (cmd[0] === "size") {
+    ans.push(queue.length);
+  } else if (cmd[0] === "empty") {
+    if (queue.length !== 0) {
+      ans.push(0);
+    } else {
+      ans.push(1);
+    }
+  } else if (cmd[0] === "front") {
+    if (queue.length !== 0) {
+      ans.push(queue[queue.length - 1]);
+    } else {
+      ans.push(-1);
+    }
+  } else if (cmd[0] === "back") {
+    if (queue.length !== 0) {
+      ans.push(queue[0]);
+    } else {
+      ans.push(-1);
+    }
   }
 }
-const ans = left.concat(right.reverse());
-
-console.log(ans.join(""));
+console.log(ans.join("\n"));
