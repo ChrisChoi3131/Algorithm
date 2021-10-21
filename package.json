@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "acmicpc": "nodemon --exec babel-node './01 ing/acmicpc.net/Main.js'"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,15 @@
   "homepage": "https://github.com/ChrisChoi3131/Algorithm#readme",
   "dependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
+    "eslint-plugin-prettier": "^3.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/preset-env": "^7.15.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.1"
   }
 }

@@ -5,13 +5,9 @@ const input = require("fs")
   .toString()
   .trim()
   .split("\n");
-// const input = require("fs")
-//   .readFileSync("/dev/stdin")
-//   .toString()
-//   .trim()
-//   .split("\n");
+// const input = require("fs").readFileSync("/dev/stdin").toString().trim().split("\n");
 
-class Stack {
+class Queue {
   constructor() {
     this._arr = [];
   }
@@ -22,7 +18,7 @@ class Stack {
     if (this.empty()) {
       return -1;
     } else {
-      return this._arr.pop();
+      return this._arr.shift();
     }
   }
   ["size"]() {
@@ -35,7 +31,14 @@ class Stack {
       return 0;
     }
   }
-  ["top"]() {
+  ["front"]() {
+    if (this.empty()) {
+      return -1;
+    } else {
+      return this._arr[0];
+    }
+  }
+  ["back"]() {
     if (this.empty()) {
       return -1;
     } else {
@@ -43,16 +46,14 @@ class Stack {
     }
   }
 }
-const stack = new Stack();
 let ans = [];
+let queue = new Queue();
 for (let i = 1; i <= input[0]; i++) {
-  const orderType = input[i].split(" ")[0];
-
-  if (orderType === "push") {
-    const value = input[i].split(" ")[1];
-    stack.push(value);
+  const query = input[i].split(" ");
+  if (query[0] === "push") {
+    queue.push(query[1]);
   } else {
-    ans.push(stack[orderType]());
+    ans.push(queue[query[0]]());
   }
 }
 console.log(ans.join("\n"));
