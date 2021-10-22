@@ -1,4 +1,5 @@
 const inputFilePath = "/sample.txt";
+
 let input = require("fs")
   .readFileSync(__dirname + inputFilePath)
   .toString()
