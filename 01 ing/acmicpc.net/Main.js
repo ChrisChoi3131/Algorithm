@@ -5,19 +5,27 @@ let input = require("fs")
   .trim()
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const setForFirst = ["0", "1", "10", "11", "100", "101", "110", "111"];
-const set = ["000", "001", "010", "011", "100", "101", "110", "111"];
 
-const nums = input[0].split("");
-
-let isFirst = true;
-let ans = "";
-nums.forEach((num) => {
-  if (isFirst) {
-    ans += setForFirst[num];
-    isFirst = !isFirst;
+function go(n) {
+  if (n === 0) return;
+  if (n % 2 === 0) {
+    go(-(n / 2));
+    ans += "0";
   } else {
-    ans += set[num];
+    if (n > 0) {
+      go(-Math.floor(n / 2));
+    } else {
+      go(-((n - 1) / 2));
+    }
+    ans += "1";
   }
-});
+}
+
+const num = Number(input[0]);
+let ans = "";
+if (num === 0) {
+  ans = "0";
+} else {
+  go(num);
+}
 console.log(ans);
