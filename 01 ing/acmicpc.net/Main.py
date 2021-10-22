@@ -2,20 +2,24 @@
 # input = sys.stdin.readline
 file = open("./01 ing/acmicpc.net/sample.txt", "r")
 input = file.readline
-def go(n):
-    if n == 0:
-        return
-    if n % 2 == 0:
-        go(-(n//2))
-        print(0,end='')
-    else:
-        if n > 0:
-            go(-(n//2))
+
+check = [False] * 1000001
+primes = []
+for i in range(2, 1000001):
+    if(check[i] == False):
+        primes.append(i)
+        j = i+i
+        while(j <= 1000000):
+            check[j] = True
+            j+=i;
+t = int(input())
+for _ in range(t):
+    n = int(input())
+    ans = 0
+    for aPrime in primes:
+        if(n-aPrime >= 2 and n >= 2 * aPrime):
+            if(check[n-aPrime] == False):
+                ans += 1
         else:
-            go((-n+1)//2)
-        print(1,end='')
-n = int(input())
-if n == 0:
-    print(0)
-else:
-    go(n)
+            break
+    print(ans)

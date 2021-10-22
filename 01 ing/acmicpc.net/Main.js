@@ -7,26 +7,31 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-function go(n) {
-  if (n === 0) return;
-  if (n % 2 === 0) {
-    go(-(n / 2));
-    ans += "0";
-  } else {
-    if (n > 0) {
-      go(-Math.floor(n / 2));
-    } else {
-      go(-((n - 1) / 2));
+let check = new Array(1000001).fill(false);
+let primes = [];
+
+for (let i = 2; i < 1000001; i++) {
+  if (check[i] === false) {
+    primes.push(i);
+    let j = i + i;
+    while (j <= 1000000) {
+      check[j] = true;
+      j += i;
     }
-    ans += "1";
   }
 }
-
-const num = Number(input[0]);
-let ans = "";
-if (num === 0) {
-  ans = "0";
-} else {
-  go(num);
+const T = Number(input[0]);
+for (let i = 1; i <= T; i++) {
+  const N = Number(input[i]);
+  let ans = 0;
+  for (const aPrime of primes) {
+    if (N - aPrime >= 2 && N >= 2 * aPrime) {
+      if (check[N - aPrime] === false) {
+        ans++;
+      }
+    } else {
+      break;
+    }
+  }
+  console.log(ans);
 }
-console.log(ans);
