@@ -7,31 +7,26 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-let check = new Array(1000001).fill(false);
-let primes = [];
-
-for (let i = 2; i < 1000001; i++) {
-  if (check[i] === false) {
-    primes.push(i);
-    let j = i + i;
-    while (j <= 1000000) {
-      check[j] = true;
-      j += i;
-    }
+const [N, B] = input[0].split(" ").map((value) => Number(value));
+let ans = [];
+calc(N, B);
+function calc(num, base) {
+  const quotinent = Math.floor(num / base);
+  const remainder = num % base;
+  ans.push(remainder);
+  if (quotinent === 0) return;
+  calc(quotinent, base);
+}
+function convertNumToString(num) {
+  if (num >= 10) {
+    return String.fromCharCode(num + 55);
+  } else {
+    return num;
   }
 }
-const T = Number(input[0]);
-for (let i = 1; i <= T; i++) {
-  const N = Number(input[i]);
-  let ans = 0;
-  for (const aPrime of primes) {
-    if (N - aPrime >= 2 && N >= 2 * aPrime) {
-      if (check[N - aPrime] === false) {
-        ans++;
-      }
-    } else {
-      break;
-    }
-  }
-  console.log(ans);
-}
+console.log(
+  ans
+    .reverse()
+    .map((value) => convertNumToString(value))
+    .join("")
+);
