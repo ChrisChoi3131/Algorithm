@@ -2,27 +2,18 @@
 # input = sys.stdin.readline
 file = open("./01 ing/acmicpc.net/sample.txt", "r")
 input = file.readline
-N, B = map(int, input().split())
+# N, B = map(int, input().split())
 
-ans = []
-
-
-def calc(num, base):
-    quotinent = num // base
-    reminder = num % base
-    ans.append(reminder)
-    if(quotinent == 0):
+#!/usr/bin/python3
+def convert(num, base):
+    if num == 0:
         return
-    calc(quotinent, base)
-
-
-def convertNumToStr(num):
-    if num >=10 : 
-      return chr(num + 55)
-    else :
-      return str(num)
-
-
-calc(N, B)
-ans.reverse()
-print("".join(convertNumToStr(i) for i in ans))
+    convert(num//base, base)
+    print(num%base, end=' ')
+a, b = map(int, input().split())
+n = int(input())
+ans = 0
+num = list(map(int,input().split()))
+for x in num:
+    ans = ans * a + x
+convert(ans, b)
