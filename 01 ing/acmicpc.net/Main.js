@@ -7,13 +7,14 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-let n = Number(input[0]);
-let res = [];
-for (let i = 2; i * i <= n; i++) {
-  while (n % i === 0) {
-    res.push(i);
-    n /= i;
-  }
+const N = Number(input[0]);
+let d = new Array(N + 1);
+d[1] = 0;
+
+for (let i = 2; i <= N; i++) {
+  d[i] = d[i - 1];
+  if (i % 2 == 0 && d[i] > d[i / 2]) d[i] = d[i / 2];
+  if (i % 3 == 0 && d[i] > d[i / 3]) d[i] = d[i / 3];
+  d[i]++;
 }
-if (n > 1) res.push(n);
-console.log(res.join("\n"));
+console.log(d[N]);

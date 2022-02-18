@@ -3,15 +3,16 @@
 
 file = open("./01 ing/acmicpc.net/sample.txt", "r")
 input = file.readline
-# N, B = map(int, input().split())
+N = int(input())
 
-n = int(input())
-i = 2
-while i*i <= n:
-    while n % i == 0:
-        print(i)
-        n //= i
-    i+=1                    
+d = [0] * (N+1)
 
-if(n > 1):
-    print(int(n))
+for i in range(2, N+1):
+    d[i] = d[i-1]
+    if(i % 2 == 0 and d[i] > d[i//2]):
+        d[i] = d[i//2]
+    if(i % 3 == 0 and d[i] > d[i//3]):
+        d[i] = d[i//3]
+    d[i] += 1
+
+print(d[N])
