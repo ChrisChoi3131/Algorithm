@@ -1,19 +1,16 @@
-const fs = require("fs");
 const inputFilePath = "/sample.txt";
-let inputArray = fs
+
+let input = require("fs")
   .readFileSync(__dirname + inputFilePath)
-  //   .readFileSync("/dev/stdin")
   .toString()
   .trim()
   .split("\n");
+// let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const N = inputArray[0];
-const NUMBER = 10007;
-const d = [];
-d.push(1);
-d.push(1);
+const N = Number(input[0]);
+let d = [];
+d[0] = d[1] = 1;
 for (let i = 2; i <= N; i++) {
-  const calcValue = (d[i - 1] + 2 * d[i - 2]) % NUMBER;
-  d.push(calcValue);
+  d[i] = (d[i - 1] + d[i - 2] * 2) % 10007;
 }
 console.log(d[N]);
