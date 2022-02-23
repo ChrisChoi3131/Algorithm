@@ -9,10 +9,10 @@ let input = require("fs")
 const N = Number(input[0]);
 let P = input[1].split(" ").map(Number);
 P.unshift(0);
-let d = new Array(N + 1).fill(0);
+let d = [...P];
 for (let i = 1; i <= N; i++) {
   for (let j = 1; j <= i; j++) {
-    if (d[i] < d[i - j] + P[j]) {
+    if (d[i] > d[i - j] + P[j]) {
       d[i] = d[i - j] + P[j];
     }
   }
