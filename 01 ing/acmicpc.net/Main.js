@@ -8,13 +8,12 @@ let input = require("fs")
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
 const N = Number(input[0]);
-let d = new Array(N + 1).fill().map((e) => [0, 0, 0]);
-const A = [[0, 0, 0]];
-
-for (let i = 1; i <= N; i++) {
-  A.push(input[i].split(" ").map(Number));
-  d[i][0] = Math.min(d[i - 1][1], d[i - 1][2]) + A[i][0];
-  d[i][1] = Math.min(d[i - 1][0], d[i - 1][2]) + A[i][1];
-  d[i][2] = Math.min(d[i - 1][0], d[i - 1][1]) + A[i][2];
+const MOD = 9901;
+let d = [[], [1, 1, 1]];
+for (let i = 2; i <= N; i++) {
+  d.push([[0, 0, 0]]);
+  d[i][0] = (d[i - 1][0] + d[i - 1][1] + d[i - 1][2]) % MOD;
+  d[i][1] = (d[i - 1][0] + d[i - 1][2]) % MOD;
+  d[i][2] = (d[i - 1][0] + d[i - 1][2]) % MOD;
 }
-console.log(Math.min(...d[N]));
+console.log(d[N].reduce((p, c) => p + c) % MOD);
