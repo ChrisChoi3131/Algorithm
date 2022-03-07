@@ -7,13 +7,16 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const N = Number(input[0]);
-
-let d = [0];
-for (let i = 1; i <= N; i++) {
-  d.push(Number.MAX_SAFE_INTEGER);
-  for (let j = 1; j * j <= i; j++) {
-    if (d[i] > d[i - j * j] + 1) d[i] = d[i - j * j] + 1;
-  }
+const MOD = 1000000009;
+const T = Number(input[0]);
+let d = new Array(1000001).fill(0);
+d[1] = 1;
+d[2] = 2;
+d[3] = 4;
+for (let i = 4; i < d.length; i++) {
+  d[i] = (d[i - 1] + d[i - 2] + d[i - 3]) % MOD;
 }
-console.log(d[N]);
+for (let test_case = 1; test_case <= T; test_case++) {
+  let n = Number(input[test_case]);
+  console.log(d[n]);
+}
