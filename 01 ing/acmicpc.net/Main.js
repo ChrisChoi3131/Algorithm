@@ -8,12 +8,15 @@ let input = require("fs")
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
 const N = Number(input[0]);
-const MOD = 9901;
-let d = [[], [1, 1, 1]];
+const MOD = 10007;
+let d = [[], new Array(10).fill(1)];
+
 for (let i = 2; i <= N; i++) {
-  d.push([[0, 0, 0]]);
-  d[i][0] = (d[i - 1][0] + d[i - 1][1] + d[i - 1][2]) % MOD;
-  d[i][1] = (d[i - 1][0] + d[i - 1][2]) % MOD;
-  d[i][2] = (d[i - 1][0] + d[i - 1][2]) % MOD;
+  d.push(new Array(10).fill(0));
+  for (let j = 0; j <= 9; j++) {
+    for (let l = 0; l <= j; l++) {
+      d[i][j] += d[i - 1][l] % MOD;
+    }
+  }
 }
 console.log(d[N].reduce((p, c) => p + c) % MOD);
