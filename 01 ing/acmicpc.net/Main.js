@@ -7,16 +7,14 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const MOD = 1000000009;
-const T = Number(input[0]);
-let d = new Array(1000001).fill(0);
-d[1] = 1;
-d[2] = 2;
-d[3] = 4;
-for (let i = 4; i < d.length; i++) {
-  d[i] = (d[i - 1] + d[i - 2] + d[i - 3]) % MOD;
+const N = Number(input[0]);
+let d = new Array(N + 1).fill().map((e) => [0, 0, 0]);
+const A = [[0, 0, 0]];
+
+for (let i = 1; i <= N; i++) {
+  A.push(input[i].split(" ").map(Number));
+  d[i][0] = Math.min(d[i - 1][1], d[i - 1][2]) + A[i][0];
+  d[i][1] = Math.min(d[i - 1][0], d[i - 1][2]) + A[i][1];
+  d[i][2] = Math.min(d[i - 1][0], d[i - 1][1]) + A[i][2];
 }
-for (let test_case = 1; test_case <= T; test_case++) {
-  let n = Number(input[test_case]);
-  console.log(d[n]);
-}
+console.log(Math.min(...d[N]));
