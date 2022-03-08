@@ -8,17 +8,22 @@ let input = require("fs")
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
 const N = Number(input[0]);
-let a = [0];
-for (let i = 1; i <= N; i++) {
-  a.push(Number(input[i]));
-}
-let d = [[0, 0, 0]];
-d.push([0, a[1], a[1]]);
-for (let i = 2; i <= N; i++) {
-  d.push([]);
-  d[i][0] = Math.max(...d[i - 1]);
-  d[i][1] = d[i - 1][0] + a[i];
-  d[i][2] = d[i - 1][1] + a[i];
-}
 
-console.log(Math.max(...d[N]));
+let a = [];
+for (let i = 1; i <= N; i++) {
+  a.push(input[i].split(" ").map(Number));
+}
+let d = [[a[0][0]]];
+for (let i = 1; i < N; i++) {
+  d.push([]);
+  for (let j = 0; j <= i; j++) {
+    if (j === 0) {
+      d[i][j] = d[i - 1][j] + a[i][j];
+    } else if (j === i) {
+      d[i][j] = d[i - 1][j - 1] + a[i][j];
+    } else {
+      d[i][j] = Math.max(d[i - 1][j], d[i - 1][j - 1]) + a[i][j];
+    }
+  }
+}
+console.log(Math.max(...d[N - 1]));
