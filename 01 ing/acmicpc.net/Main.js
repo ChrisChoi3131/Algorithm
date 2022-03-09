@@ -11,14 +11,12 @@ const N = Number(input[0]);
 const A = input[1].split(" ").map(Number);
 
 let d = new Array(N).fill(0);
-d[0] = A[0];
+d[0] = 1;
 
 for (let i = 1; i < N; i++) {
   for (let j = 0; j < i; j++) {
-    if (A[i] > A[j] && d[i] <= d[j]) {
-      d[i] = d[j];
-    }
+    if (A[i] < A[j] && d[j] >= d[i]) d[i] = d[j];
   }
-  d[i] += A[i];
+  d[i]++;
 }
 console.log(Math.max(...d));
