@@ -10,25 +10,21 @@ let input = require("fs")
 const N = Number(input[0]);
 const A = input[1].split(" ").map(Number);
 
-let forD = new Array(N).fill(0);
-let backD = new Array(N).fill(0);
-forD[0] = 1;
+let dl = new Array(N).fill(0),
+  dr = new Array(N).fill(0);
+dl[0] = A[0];
+dr[N - 1] = A[N - 1];
 for (let i = 1; i < N; i++) {
-  for (let j = 0; j < i; j++) {
-    if (A[i] > A[j] && forD[j] >= forD[i]) forD[i] = forD[j];
-  }
-  forD[i]++;
+  dl[i] = Math.max(dl[i - 1], 0);
+  dl[i] += A[i];
 }
-for (let i = N - 1; i >= 0; i--) {
-  for (let j = N - 1; j > i; j--) {
-    if (A[i] > A[j] && backD[j] > backD[i]) backD[i] = backD[j];
-  }
-  backD[i]++;
+for (let i = N - 2; i >= 0; i--) {
+  dr[i] = Math.max(dr[i + 1], 0);
+  dr[i] += A[i];
 }
-console.log(
-  Math.max(
-    ...forD.map((num, idx) => {
-      return num + backD[idx];
-    })
-  ) - 1
-);
+
+let ans = Math.max(...dl);
+for (let i = 1; i < N - 1; i++) {
+  ans < dl[i - 1] + dr[i + 1] ? (ans = dl[i - 1] + dr[i + 1]) : "";
+}
+console.log(ans);
