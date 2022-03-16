@@ -7,27 +7,22 @@ let input = require("fs")
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const N = Number(input[0]);
-let d = [];
-let a = [];
-let ans = Number.MAX_SAFE_INTEGER;
-for (let i = 1; i <= N; i++) {
-  a.push(input[i].split(" ").map(Number));
-}
-for (let i = 0; i < 3; i++) {
-  d = [[Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER]];
-  d[0][i] = a[0][i];
-  for (let j = 1; j < N; j++) {
-    d.push([]);
-    d[j][0] = Math.min(d[j - 1][1], d[j - 1][2]) + a[j][0];
-    d[j][1] = Math.min(d[j - 1][0], d[j - 1][2]) + a[j][1];
-    d[j][2] = Math.min(d[j - 1][0], d[j - 1][1]) + a[j][2];
+let heights = input.map(Number);
+let total = heights.reduce((p, c) => p + c);
+let indexs = [];
+outer: for (let i = 0; i < heights.length; i++) {
+  for (let j = 0; j < heights.length; j++) {
+    if (i !== j) {
+      let check = total - heights[i] - heights[j] === 100 ? true : false;
+      if (check) {
+        indexs.push(i, j);
+        break outer;
+      }
+    }
   }
-  ans = Math.min(
-    ans,
-    ...d[N - 1].map((num, idx) => {
-      return idx !== i ? num : Number.MAX_SAFE_INTEGER;
-    })
-  );
 }
-console.log(ans);
+let ans = [];
+heights.forEach((ele, idx) => {
+  if (indexs.indexOf(idx) === -1) ans.push(ele);
+});
+console.log(ans.sort((a, b) => a - b).join("\n"));
