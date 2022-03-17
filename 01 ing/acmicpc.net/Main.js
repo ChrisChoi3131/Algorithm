@@ -6,25 +6,18 @@ let input = require("fs")
   .trim()
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const JunesYEAR = input[0].split(" ").map(Number);
-const E = 16,
-  S = 29,
-  M = 20;
 
-let realYear = 1;
-let e = 1,
-  s = 1,
-  m = 1;
-while (true) {
-  if (e === JunesYEAR[0] && s === JunesYEAR[1] && m === JunesYEAR[2]) {
-    console.log(realYear);
-    process.exit();
+const startChannel = 100;
+const wantedChannel = Number(input[0]);
+const M = Number(input[1]);
+const brokenChannels = M !== 0 ? input[2].split(" ").map(Number) : [];
+let ans = Math.abs(wantedChannel - startChannel);
+outer: for (let i = 0; i <= 1000000; i++) {
+  const selectedChannels = i.toString().split("").map(Number);
+  let numOfClicks = Math.abs(i - wantedChannel) + selectedChannels.length;
+  for (let i = 0; i < selectedChannels.length; i++) {
+    if (brokenChannels.indexOf(selectedChannels[i]) !== -1) continue outer;
   }
-  e++;
-  if (e === E) e = 1;
-  s++;
-  if (s === S) s = 1;
-  m++;
-  if (m === M) m = 1;
-  realYear++;
+  ans > numOfClicks ? (ans = numOfClicks) : "";
 }
+console.log(ans);
