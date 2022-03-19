@@ -6,18 +6,140 @@ let input = require("fs")
   .trim()
   .split("\n");
 // let input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-
-const startChannel = 100;
-const wantedChannel = Number(input[0]);
-const M = Number(input[1]);
-const brokenChannels = M !== 0 ? input[2].split(" ").map(Number) : [];
-let ans = Math.abs(wantedChannel - startChannel);
-outer: for (let i = 0; i <= 1000000; i++) {
-  const selectedChannels = i.toString().split("").map(Number);
-  let numOfClicks = Math.abs(i - wantedChannel) + selectedChannels.length;
-  for (let i = 0; i < selectedChannels.length; i++) {
-    if (brokenChannels.indexOf(selectedChannels[i]) !== -1) continue outer;
-  }
-  ans > numOfClicks ? (ans = numOfClicks) : "";
+const [n, m] = input[0].split(" ").map(Number);
+const tetrominos = [
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+    { x: 0, y: 3 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 2, y: 0 },
+    { x: 3, y: 0 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 2, y: 0 },
+    { x: 2, y: 1 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+  ],
+  [
+    { x: 0, y: 2 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 1, y: 2 },
+  ],
+  [
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+    { x: 2, y: 0 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+    { x: 1, y: 2 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 1, y: 0 },
+    { x: 2, y: 0 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 1, y: 2 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+  ],
+  [
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+  ],
+  [
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: 1, y: 0 },
+    { x: 2, y: 0 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 1, y: 1 },
+    { x: 1, y: 2 },
+  ],
+  [
+    { x: 0, y: 1 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 1, y: 2 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 2, y: 0 },
+  ],
+  [
+    { x: 0, y: 0 },
+    { x: 0, y: 1 },
+    { x: 0, y: 2 },
+    { x: 1, y: 1 },
+  ],
+  [
+    { x: 0, y: 1 },
+    { x: 1, y: 0 },
+    { x: 1, y: 1 },
+    { x: 2, y: 1 },
+  ],
+];
+let arr = [];
+for (let i = 1; i <= n; i++) {
+  arr.push(input[i].split(" ").map(Number));
 }
-console.log(ans);
+let max = 0;
+for (let i = 0; i < n; i++) {
+  for (let j = 0; j < m; j++) {
+    outer: for (let k = 0; k < tetrominos.length; k++) {
+      let sum = 0;
+      for (let l = 0; l < tetrominos[k].length; l++) {
+        const x = i + tetrominos[k][l].x;
+        const y = j + tetrominos[k][l].y;
+        if (x >= n || y >= m) continue outer;
+        sum += arr[x][y];
+      }
+      max < sum ? (max = sum) : "";
+    }
+  }
+}
+console.log(max);
