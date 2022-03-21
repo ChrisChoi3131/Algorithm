@@ -12,18 +12,16 @@ let visited = [],
   a = [],
   print = [];
 
-function go(idx) {
+function go(idx, start) {
   if (idx === m) {
     print.push(a.join(" "));
     return;
   }
   for (let i = 1; i <= n; i++) {
-    // if (visited[i]) continue;
-    // visited[i] = true;
+    if (i < start) continue;
     a[idx] = i;
-    go(idx + 1);
-    // visited[i] = false;
+    go(idx + 1, i);
   }
 }
-go(0);
+go(0, 1);
 console.log(print.join("\n"));
