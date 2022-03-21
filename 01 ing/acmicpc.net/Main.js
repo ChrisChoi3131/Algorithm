@@ -6,13 +6,23 @@ const input = require("fs")
   .trim()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const N = Number(input[0]);
-const N_Len = N.toString().length - 1;
-let idx = 0,
-  length = 0;
-while (idx < N_Len) {
-  length += 9 * Math.pow(10, idx) * (idx + 1);
-  idx++;
+const [n, m] = input[0].split(" ").map(Number);
+let visited = new Array(n + 1).fill(false);
+
+let print = [];
+let a = [];
+go(0);
+console.log(print.join("\n"));
+function go(idx) {
+  if (idx === m) {
+    print.push(a.join(" "));
+    return;
+  }
+  for (let i = 1; i <= n; i++) {
+    if (visited[i]) continue;
+    visited[i] = true;
+    a[idx] = i;
+    go(idx + 1);
+    visited[i] = false;
+  }
 }
-length += (N - Math.pow(10, N_Len) + 1) * (N_Len + 1);
-console.log(length);
