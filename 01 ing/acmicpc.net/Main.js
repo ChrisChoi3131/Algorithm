@@ -20,11 +20,8 @@ function go(idx, startIdx) {
     return;
   }
   for (let i = 1; i <= n; i++) {
-    if (visited[i] || arr[startIdx] > arr[i]) continue;
-    visited[i] = true;
     a[idx] = arr[i];
     go(idx + 1, i);
-    visited[i] = false;
   }
 }
 go(0, 0);
