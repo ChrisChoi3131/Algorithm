@@ -7,21 +7,25 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 const [n, m] = input[0].split(" ").map(Number);
-
+let arr = input[1].split(" ").map(Number);
+arr.sort((a, b) => a - b);
+arr.unshift(0);
 let visited = [],
   a = [],
   print = [];
 
-function go(idx, start) {
+function go(idx) {
   if (idx === m) {
     print.push(a.join(" "));
     return;
   }
   for (let i = 1; i <= n; i++) {
-    if (i < start) continue;
-    a[idx] = i;
-    go(idx + 1, i);
+    if (visited[i]) continue;
+    visited[i] = true;
+    a[idx] = arr[i];
+    go(idx + 1);
+    visited[i] = false;
   }
 }
-go(0, 1);
+go(0);
 console.log(print.join("\n"));
