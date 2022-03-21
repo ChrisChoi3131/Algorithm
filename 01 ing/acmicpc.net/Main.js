@@ -20,6 +20,7 @@ function go(idx, startIdx) {
     return;
   }
   for (let i = 1; i <= n; i++) {
+    if (arr[startIdx] > arr[i]) continue;
     a[idx] = arr[i];
     go(idx + 1, i);
   }
