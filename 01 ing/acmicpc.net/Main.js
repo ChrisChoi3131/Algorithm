@@ -7,22 +7,22 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 const [n, m] = input[0].split(" ").map(Number);
-let visited = new Array(n + 1).fill(false);
 
-let print = [];
-let a = [];
-go(0);
-console.log(print.join("\n"));
-function go(idx) {
+let visited = [],
+  a = [],
+  print = [];
+function go(idx, preNum) {
   if (idx === m) {
     print.push(a.join(" "));
     return;
   }
-  for (let i = 1; i <= n; i++) {
+  for (let i = preNum; i <= n; i++) {
     if (visited[i]) continue;
     visited[i] = true;
     a[idx] = i;
-    go(idx + 1);
+    go(idx + 1, i);
     visited[i] = false;
   }
 }
+go(0, 1);
+console.log(print.join("\n"));
