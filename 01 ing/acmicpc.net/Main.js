@@ -14,18 +14,18 @@ let visited = [],
   a = [],
   print = [];
 
-function go(idx) {
+function go(idx, startIdx) {
   if (idx === m) {
     print.push(a.join(" "));
     return;
   }
   for (let i = 1; i <= n; i++) {
-    if (visited[i]) continue;
+    if (visited[i] || arr[startIdx] > arr[i]) continue;
     visited[i] = true;
     a[idx] = arr[i];
-    go(idx + 1);
+    go(idx + 1, i);
     visited[i] = false;
   }
 }
-go(0);
+go(0, 0);
 console.log(print.join("\n"));
