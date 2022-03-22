@@ -29,15 +29,16 @@ let [nums, counts] = (function (arr) {
 );
 let printLine = [];
 let printNum = [];
-function go(idx) {
+function go(idx, startNum) {
   if (idx === m) {
     printLine.push(printNum.join(" "));
     return;
   }
   for (let i = 0; i < nums.length; i++) {
+    if (startNum > nums[i]) continue;
     printNum[idx] = nums[i];
     go(idx + 1, nums[i]);
   }
 }
-go(0);
+go(0, 0);
 console.log(printLine.join("\n"));
