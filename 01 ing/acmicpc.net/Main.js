@@ -7,28 +7,29 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 let n = Number(input[0]);
-let permutation = input[1].split(" ").map(Number);
+let currPerm = input[1].split(" ").map(Number);
 
-function findNextPermutation() {
+function findPrevPerm() {
   let idx = n - 1;
   for (let i = n - 1; i > 0; i--) {
-    if (permutation[i - 1] < permutation[i]) {
+    if (currPerm[i - 1] > currPerm[i]) {
       idx = i - 1;
       break;
     }
   }
   if (idx === n - 1) return false;
-  let idx2 = 0;
-  for (let i = n - 1; i > 0; i--) {
-    if (permutation[i] > permutation[idx]) {
+  currPerm = currPerm.slice(0, idx + 1).concat(currPerm.splice(idx + 1).reverse());
+  let idx2 = n - 1;
+  for (let i = n - 1; i >= idx; i--) {
+    if (currPerm[idx] > currPerm[i]) {
       idx2 = i;
-      break;
     }
   }
-  let temp = permutation[idx];
-  permutation[idx] = permutation[idx2];
-  permutation[idx2] = temp;
-  permutation = permutation.slice(0, idx + 1).concat(permutation.slice(idx + 1).reverse());
+  let temp = currPerm[idx];
+  currPerm[idx] = currPerm[idx2];
+  currPerm[idx2] = temp;
   return true;
 }
-findNextPermutation() ? console.log(permutation.join(" ")) : console.log(-1);
+
+// splice slice compare
+findPrevPerm() ? console.log(currPerm.join(" ")) : console.log(-1);
