@@ -6,39 +6,29 @@ const input = require("fs")
   .trim()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const [n, m] = input[0].split(" ").map(Number);
-let [nums, counts] = (function (arr) {
-  let nums = [],
-    counts = [],
-    pre;
-  for (let i = 0; i < arr.length; i++) {
-    if (pre !== arr[i]) {
-      nums.push(arr[i]);
-      counts.push(1);
-    } else {
-      counts[counts.length - 1]++;
+let n = Number(input[0]);
+let permutation = input[1].split(" ").map(Number);
+
+function findNextPermutation() {
+  let idx = n - 1;
+  for (let i = n - 1; i > 0; i--) {
+    if (permutation[i - 1] < permutation[i]) {
+      idx = i - 1;
+      break;
     }
-    pre = arr[i];
   }
-  return [nums, counts];
-})(
-  input[1]
-    .split(" ")
-    .map(Number)
-    .sort((a, b) => a - b)
-);
-let printLine = [];
-let printNum = [];
-function go(idx, startNum) {
-  if (idx === m) {
-    printLine.push(printNum.join(" "));
-    return;
+  if (idx === n - 1) return false;
+  let idx2 = 0;
+  for (let i = n - 1; i > 0; i--) {
+    if (permutation[i] > permutation[idx]) {
+      idx2 = i;
+      break;
+    }
   }
-  for (let i = 0; i < nums.length; i++) {
-    if (startNum > nums[i]) continue;
-    printNum[idx] = nums[i];
-    go(idx + 1, nums[i]);
-  }
+  let temp = permutation[idx];
+  permutation[idx] = permutation[idx2];
+  permutation[idx2] = temp;
+  permutation = permutation.slice(0, idx + 1).concat(permutation.slice(idx + 1).reverse());
+  return true;
 }
-go(0, 0);
-console.log(printLine.join("\n"));
+findNextPermutation() ? console.log(permutation.join(" ")) : console.log(-1);
