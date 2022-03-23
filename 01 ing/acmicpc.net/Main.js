@@ -8,12 +8,18 @@ const input = require("fs")
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
 const n = Number(input[0]);
-let currPerm = input[1]
-  .split(" ")
-  .map(Number)
-  .sort((a, b) => a - b);
-
-let numOfPerms = (function () {
+let w = [];
+for (let i = 1; i <= n; i++) {
+  w.push(input[i].split(" ").map(Number));
+}
+let currPerm = (function () {
+  let array = [];
+  for (let i = 0; i < n; i++) {
+    array.push(i);
+  }
+  return array;
+})();
+let numOfPerm = (function () {
   let sum = 1;
   for (let i = 1; i <= n; i++) {
     sum *= i;
@@ -21,9 +27,22 @@ let numOfPerms = (function () {
   return sum;
 })();
 
+function getDistance() {
+  let sumDis = 0;
+  let [start, end] = [currPerm[0], currPerm[n - 1]];
+  for (let i = 0; i < n - 1; i++) {
+    let [from, to] = [currPerm[i], currPerm[i + 1]];
+    if (w[from][to] !== 0) {
+      sumDis += w[from][to];
+    } else {
+      return 0;
+    }
+  }
+  return w[end][start] !== 0 ? sumDis + w[end][start] : 0;
+}
 function findNextPerm() {
   let idx = n - 1;
-  for (let i = n - 1; i >= 0; i--) {
+  for (let i = n - 1; i > 0; i--) {
     if (currPerm[i - 1] < currPerm[i]) {
       idx = i - 1;
       break;
@@ -37,25 +56,20 @@ function findNextPerm() {
       break;
     }
   }
-  let temp = currPerm[idx];
+  let tmp = currPerm[idx];
   currPerm[idx] = currPerm[idx2];
-  currPerm[idx2] = temp;
+  currPerm[idx2] = tmp;
   currPerm = currPerm.slice(0, idx + 1).concat(currPerm.slice(idx + 1).reverse());
   return true;
 }
-function formula() {
-  let sum = 0;
-  for (let i = 0; i < n - 1; i++) {
-    sum += Math.abs(currPerm[i] - currPerm[i + 1]);
-  }
-  return sum;
-}
-let ans = formula();
-for (let i = 0; i < numOfPerms; i++) {
-  let isFindedPerm = findNextPerm();
-  if (isFindedPerm) {
-    let resultFormula = formula();
-    if (resultFormula > ans) ans = resultFormula;
+let ans = getDistance() !== 0 ? getDistance() : Number.MAX_SAFE_INTEGER;
+for (let i = 0; i < numOfPerm; i++) {
+  if (findNextPerm()) {
+    if (currPerm[0] !== 0) break;
+    let dis = getDistance();
+    if (ans > dis && dis !== 0) ans = getDistance();
+  } else {
+    break;
   }
 }
 console.log(ans);
