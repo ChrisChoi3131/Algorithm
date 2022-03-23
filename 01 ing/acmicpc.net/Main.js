@@ -6,33 +6,34 @@ const input = require("fs")
   .trim()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-let idx = 0;
-let arr = [];
-let c = [];
-
+const [l, c] = input[0].split(" ").map(Number);
+let alphabets = input[1].split(" ").sort();
 let ans = [];
+let visited = [];
 let line = [];
-const n = 6;
-
-function go(idx) {
-  if (idx === n) {
-    ans.push(line.join(" ") + "\n");
+const vowels = ["a", "e", "i", "o", "u"];
+function go(idx, startIdx) {
+  if (idx === l) {
+    let numOfVowels = 0,
+      numOfConsonants = 0;
+    for (let i = 0; i < l; i++) {
+      if (vowels.includes(line[i])) {
+        numOfVowels++;
+      } else {
+        numOfConsonants++;
+      }
+    }
+    if (numOfVowels >= 1 && numOfConsonants >= 2) ans.push(line.join(""));
     return;
   }
-  for (let i = 0; i < arr.length; i++) {
-    if (c[i] || line[idx - 1] > arr[i]) continue;
-    c[i] = true;
-    line[idx] = arr[i];
-    go(idx + 1);
-    c[i] = false;
+  for (let i = startIdx; i < c; i++) {
+    if (visited[i]) continue;
+    visited[i] = true;
+    line[idx] = alphabets[i];
+    go(idx + 1, i);
+    visited[i] = false;
   }
 }
-while (idx !== -1) {
-  arr = input[idx].split(" ").map(Number);
-  let k = arr.shift();
-  if (k === 0) break;
-  go(0);
-  idx++;
-  ans.push("\n");
-}
-console.log(ans.join(""));
+
+go(0, 0);
+console.log(ans.join("\n"));
