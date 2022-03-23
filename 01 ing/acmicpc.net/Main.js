@@ -7,8 +7,11 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-let n = Number(input[0]);
-let currPerm = new Array(n).fill(1).map((x, idx) => x + idx);
+const n = Number(input[0]);
+let currPerm = input[1]
+  .split(" ")
+  .map(Number)
+  .sort((a, b) => a - b);
 
 let numOfPerms = (function () {
   let sum = 1;
@@ -20,12 +23,13 @@ let numOfPerms = (function () {
 
 function findNextPerm() {
   let idx = n - 1;
-  for (let i = n - 1; i > 0; i--) {
+  for (let i = n - 1; i >= 0; i--) {
     if (currPerm[i - 1] < currPerm[i]) {
       idx = i - 1;
       break;
     }
   }
+  if (idx === n - 1) return false;
   let idx2 = n - 1;
   for (let i = n - 1; i > idx; i--) {
     if (currPerm[idx] < currPerm[i]) {
@@ -37,10 +41,21 @@ function findNextPerm() {
   currPerm[idx] = currPerm[idx2];
   currPerm[idx2] = temp;
   currPerm = currPerm.slice(0, idx + 1).concat(currPerm.slice(idx + 1).reverse());
-  return currPerm.join(" ");
+  return true;
 }
-let ans = [currPerm.join(" ")];
-for (let i = 0; i < numOfPerms - 1; i++) {
-  ans.push(findNextPerm());
+function formula() {
+  let sum = 0;
+  for (let i = 0; i < n - 1; i++) {
+    sum += Math.abs(currPerm[i] - currPerm[i + 1]);
+  }
+  return sum;
 }
-console.log(ans.join("\n"));
+let ans = formula();
+for (let i = 0; i < numOfPerms; i++) {
+  let isFindedPerm = findNextPerm();
+  if (isFindedPerm) {
+    let resultFormula = formula();
+    if (resultFormula > ans) ans = resultFormula;
+  }
+}
+console.log(ans);
