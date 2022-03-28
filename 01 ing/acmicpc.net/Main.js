@@ -6,29 +6,45 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const [n, m] = input[0].split(" ").map(Number);
-let adM = new Array(n).fill(0).map(() => new Array(n).fill(false));
-let adL = new Array(n).fill(0).map(() => new Array());
-let edgeL = [];
+const [n, m, v] = input[0].split(" ").map(Number);
+let adL = new Array(n + 1).fill(0).map(() => new Array());
 for (let i = 1; i <= m; i++) {
   const [a, b] = input[i].split(" ").map(Number);
-  adM[a][b] = adM[b][a] = true;
   adL[a].push(b);
   adL[b].push(a);
-  edgeL.push([a, b]);
-  edgeL.push([b, a]);
 }
-for (let i = 0; i < edgeL.length; i++) {
-  const [a, b] = edgeL[i];
-  for (let j = 0; j < edgeL.length; j++) {
-    const [c, d] = edgeL[j];
-    if (a === b || a === c || a === d || b === c || b === d || c === d) continue;
-    if (!adM[b][c]) continue;
-    for (const e of adL[d]) {
-      if (e === a || e === b || e === c || e === d) continue;
-      console.log(1);
-      process.exit();
+adL.forEach((ele) => ele.sort((a, b) => a - b));
+
+function dfs(v) {
+  if (check[v]) return;
+  ans.push(v);
+  check[v] = true;
+  for (const nextV of adL[v]) {
+    if (!check[nextV]) {
+      dfs(nextV);
     }
   }
 }
-console.log(0);
+function bfs(v) {
+  ans = [];
+  check = new Array(n + 1).fill(false);
+  let q = [];
+  q.unshift(v);
+  check[v] = true;
+  while (q.length) {
+    const currV = q.pop();
+    ans.push(currV);
+    for (const nextV of adL[currV]) {
+      if (!check[nextV]) {
+        q.unshift(nextV);
+        check[nextV] = true;
+      }
+    }
+  }
+}
+let ans = [];
+let check = new Array(n + 1).fill(false);
+dfs(v);
+console.log(ans.join(" "));
+bfs(v);
+console.log(ans.join(" "));
