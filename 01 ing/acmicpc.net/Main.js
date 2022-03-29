@@ -5,68 +5,45 @@ const input = require("fs")
   .trim()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
+const n = Number(input[0]);
 
-const [m, n] = input[0].split(" ").map(Number);
-const [unripeTomato, ripeTomato] = [0, 1];
-const dx = [0, 0, -1, 1];
-const dy = [-1, 1, 0, 0];
+let q;
 let head = 0,
   tail = 0;
-let q = new Array();
-const q_push = (dat) => {
-  q[tail++] = dat;
-};
-const q_pop = () => {
-  return q[head++];
-};
+
+const q_push = (point) => (q[tail++] = point);
+const q_pop = () => q[head++];
 const q_size = () => tail - head;
 
-let tomatoes = [];
-let timeToRipe = new Array(n).fill(0).map(() => new Array(m).fill(0));
-let isExistUnripeToamto = false;
-let isExistRipeToamto = false;
-for (let i = 1; i <= n; i++) {
-  const row = input[i].split(" ").map(Number);
-  row.indexOf(unripeTomato) !== -1 ? (isExistUnripeToamto = true) : "";
-  row.indexOf(ripeTomato) !== -1 ? (isExistRipeToamto = true) : "";
-  tomatoes.push(row);
-}
-if (isExistRipeToamto && !isExistUnripeToamto) {
-  console.log(0);
-} else if (!isExistRipeToamto) {
-  console.log(-1);
-} else {
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      if (tomatoes[i][j] === ripeTomato) {
-        q_push({ x: i, y: j });
-      }
-    }
-  }
-  let maxTime = 0;
-  while (q_size()) {
-    const { x, y } = q_pop();
-    for (let i = 0; i < 4; i++) {
-      const nx = x + dx[i];
-      const ny = y + dy[i];
-      if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
-      if (tomatoes[nx][ny] === unripeTomato) {
-        if (timeToRipe[nx][ny] === 0) {
-          timeToRipe[nx][ny] = timeToRipe[x][y] + 1;
-          maxTime < timeToRipe[nx][ny] ? (maxTime = timeToRipe[nx][ny]) : "";
-          q_push({ x: nx, y: ny });
-        }
-      }
-    }
-  }
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      if (timeToRipe[i][j] === 0 && tomatoes[i][j] === unripeTomato) {
-        console.log(-1);
-        process.exit();
-      }
-    }
-  }
+const dx = [-2, -2, -1, -1, 1, 1, 2, 2];
+const dy = [-1, 1, -2, 2, -2, 2, -1, 1];
+let ans = [];
+for (let i = 1; i <= n * 3; i += 3) {
+  const l = Number(input[i]);
+  (head = 0), (tail = 0);
 
-  console.log(maxTime);
+  let check = new Array(l).fill(0).map(() => new Array(l).fill(0));
+  const [sx, sy] = input[i + 1].split(" ").map(Number);
+  const [ex, ey] = input[i + 2].split(" ").map(Number);
+  if (sx === ex && sy === ey) {
+    ans.push(0);
+    continue;
+  }
+  q = [];
+  q_push({ x: sx, y: sy });
+  while (q_size()) {
+    let { x, y } = q_pop();
+    for (let i = 0; i < 8; i++) {
+      let nx = x + dx[i];
+      let ny = y + dy[i];
+      if (nx < 0 || ny < 0 || nx >= l || ny >= l) continue;
+      if (check[nx][ny] === 0) {
+        check[nx][ny] = check[x][y] + 1;
+        if (nx === ex && ny === ey) break;
+        q_push({ x: nx, y: ny });
+      }
+    }
+  }
+  ans.push(check[ex][ey]);
 }
+console.log(ans.join("\n"));
