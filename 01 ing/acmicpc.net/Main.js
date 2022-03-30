@@ -6,37 +6,19 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const [n, m] = input[0].split(" ").map(Number);
-const dx = [-1, 1, 0, 0];
-const dy = [0, 0, -1, 1];
-let playGround = [];
-let check = new Array(n).fill(0).map(() => new Array(m).fill(false));
+let deque = [];
+
+const n = Number(input[0]);
+let ans = [];
 for (let i = 1; i <= n; i++) {
-  playGround.push(input[i].split(""));
+  const command = input[i].split(" ");
+  if (command[0] === "push_front") deque.unshift(command[1]);
+  else if (command[0] === "push_back") deque.push(command[1]);
+  else if (command[0] === "pop_front") deque.length !== 0 ? ans.push(deque.shift()) : ans.push(-1);
+  else if (command[0] === "pop_back") deque.length !== 0 ? ans.push(deque.pop()) : ans.push(-1);
+  else if (command[0] === "size") ans.push(deque.length);
+  else if (command[0] === "empty") deque.length !== 0 ? ans.push(0) : ans.push(1);
+  else if (command[0] === "front") deque.length !== 0 ? ans.push(deque[0]) : ans.push(-1);
+  else if (command[0] === "back") deque.length !== 0 ? ans.push(deque[deque.length - 1]) : ans.push(-1);
 }
-for (let i = 0; i < n; i++) {
-  for (let j = 0; j < m; j++) {
-    if (!check[i][j]) {
-      let result = dfs(i, j, -1, -1, playGround[i][j]);
-      if (result) {
-        console.log("Yes");
-        process.exit();
-      }
-    }
-  }
-}
-console.log("No");
-function dfs(x, y, px, py, color) {
-  if (check[x][y]) return true;
-  check[x][y] = true;
-  for (let i = 0; i < 4; i++) {
-    const nx = x + dx[i];
-    const ny = y + dy[i];
-    if (px === nx && py === ny) continue;
-    if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
-    if (playGround[nx][ny] === color) {
-      if (dfs(nx, ny, x, y, color)) return true;
-    }
-  }
-  return false;
-}
+console.log(ans.join("\n"));
