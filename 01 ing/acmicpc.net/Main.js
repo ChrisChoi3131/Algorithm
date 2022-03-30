@@ -6,19 +6,35 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-let deque = [];
-
-const n = Number(input[0]);
+const line = input[0].split("");
+let stack = [];
 let ans = [];
-for (let i = 1; i <= n; i++) {
-  const command = input[i].split(" ");
-  if (command[0] === "push_front") deque.unshift(command[1]);
-  else if (command[0] === "push_back") deque.push(command[1]);
-  else if (command[0] === "pop_front") deque.length !== 0 ? ans.push(deque.shift()) : ans.push(-1);
-  else if (command[0] === "pop_back") deque.length !== 0 ? ans.push(deque.pop()) : ans.push(-1);
-  else if (command[0] === "size") ans.push(deque.length);
-  else if (command[0] === "empty") deque.length !== 0 ? ans.push(0) : ans.push(1);
-  else if (command[0] === "front") deque.length !== 0 ? ans.push(deque[0]) : ans.push(-1);
-  else if (command[0] === "back") deque.length !== 0 ? ans.push(deque[deque.length - 1]) : ans.push(-1);
+let isTag = false;
+for (let i = 0; i < line.length; i++) {
+  let char = line[i];
+  if (char === "<") {
+    isTag = true;
+    print();
+  } else if (char === ">") {
+    ans.push(char);
+    isTag = false;
+    continue;
+  }
+
+  if (isTag) ans.push(char);
+  else {
+    if (char !== " ") {
+      stack.push(char);
+    } else {
+      print();
+      ans.push(char);
+    }
+  }
+  if (i === line.length - 1) print();
 }
-console.log(ans.join("\n"));
+function print() {
+  while (stack.length) {
+    ans.push(stack.pop());
+  }
+}
+console.log(ans.join(""));
