@@ -5,4 +5,12 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
 
-console.log(input[0].length);
+let cntAlphabet = new Array(26).fill(-1);
+let chars = input[0].split("");
+let idxSmallLetter = 97;
+
+chars.forEach((char) => {
+  cntAlphabet[char.charCodeAt() - idxSmallLetter] = chars.indexOf(char);
+});
+
+console.log(cntAlphabet.join(" "));
