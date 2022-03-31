@@ -6,35 +6,15 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const line = input[0].split("");
-let stack = [];
-let ans = [];
-let isTag = false;
-for (let i = 0; i < line.length; i++) {
-  let char = line[i];
-  if (char === "<") {
-    isTag = true;
-    print();
-  } else if (char === ">") {
-    ans.push(char);
-    isTag = false;
-    continue;
-  }
+const word = input[0].split("");
 
-  if (isTag) ans.push(char);
-  else {
-    if (char !== " ") {
-      stack.push(char);
-    } else {
-      print();
-      ans.push(char);
-    }
-  }
-  if (i === line.length - 1) print();
+let prefixs = [];
+for (let i = 0; i < word.length; i++) {
+  prefixs[i] = word.slice(i);
 }
-function print() {
-  while (stack.length) {
-    ans.push(stack.pop());
-  }
+prefixs.sort();
+let ans = [];
+for (let i = 0; i < prefixs.length; i++) {
+  ans.push(prefixs[i].join(""));
 }
-console.log(ans.join(""));
+console.log(ans.join("\n"));
