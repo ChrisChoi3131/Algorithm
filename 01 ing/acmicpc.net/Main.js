@@ -6,18 +6,34 @@ const input = require("fs")
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
 
 const n = Number(input[0]);
-const t = new Array(n + 1);
+const abilities = [];
+const aTeam = new Array(n / 2);
+let minimumDiff = Number.MAX_SAFE_INTEGER;
+const check = new Array(n).fill(false);
 for (let i = 1; i <= n; i++) {
-  t[i] = input[i].split(" ").map(Number);
+  abilities.push(input[i].split(" ").map(Number));
 }
-const d = new Array(n + 1).fill(0);
-if (t[1][0] - 1 < n) d[1] = t[1][1];
-for (let i = 2; i <= n; i++) {
-  for (let j = 1; j < i; j++) {
-    if (i - j - t[j][0] >= 0) {
-      d[i] = Math.max(d[j], d[i]);
+go(0, 0);
+function go(node, idx) {
+  if (check[node]) return;
+  if (idx === n / 2) {
+    let aTeamAbility = 0;
+    let bTeamAbility = 0;
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        if (aTeam.indexOf(i) !== -1 && aTeam.indexOf(j) !== -1) aTeamAbility = aTeamAbility + abilities[i][j];
+        else if (aTeam.indexOf(i) === -1 && aTeam.indexOf(j) === -1) bTeamAbility = bTeamAbility + abilities[i][j];
+      }
     }
+    const differential = Math.abs(aTeamAbility - bTeamAbility);
+    minimumDiff = Math.min(minimumDiff, differential);
+    return;
   }
-  if (i + t[i][0] - 1 <= n) d[i] += t[i][1];
+  for (let i = node; i < n; i++) {
+    check[i] = true;
+    aTeam[idx] = i;
+    go(i + 1, idx + 1);
+    check[i] = false;
+  }
 }
-console.log(Math.max(...d));
+console.log(minimumDiff);
