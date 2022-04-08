@@ -5,16 +5,16 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
 
-const [n, k] = input[0].split(" ").map(Number);
-let d = new Array(201).fill(0).map(() => new Array(201).fill(0));
-const mod = 1000000000;
-d[1] = d[1].map((ele, idx) => idx);
-for (let i = 0; i < d.length; i++) {
-  d[i][1] = 1;
-}
-for (let i = 2; i < d.length; i++) {
-  for (let j = 2; j < d[i].length; j++) {
-    d[i][j] = (d[i - 1][j] + d[i][j - 1]) % mod;
+const n = Number(input[0]);
+
+const d = [1, 0, 3];
+for (let i = 3; i <= n; i++) {
+  if (i % 2 === 1) d[i] = 0;
+  else {
+    d[i] = d[2] * d[i - 2];
+    for (let j = i - 4; j >= 0; j -= 2) {
+      d[i] += d[j] * 2;
+    }
   }
 }
-console.log(d[n][k]);
+console.log(d[n]);
