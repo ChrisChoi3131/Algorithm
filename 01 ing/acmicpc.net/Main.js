@@ -5,35 +5,45 @@ const input = require("fs")
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
 
-const n = Number(input[0]);
-const abilities = [];
-const aTeam = new Array(n / 2);
-let minimumDiff = Number.MAX_SAFE_INTEGER;
-const check = new Array(n).fill(false);
-for (let i = 1; i <= n; i++) {
-  abilities.push(input[i].split(" ").map(Number));
-}
+const k = Number(input[0]);
+const inequalitySigns = input[1].split(" ");
+let max = -Infinity;
+let min = Infinity;
+const check = new Array(10).fill(false);
+const a = [];
 go(0, 0);
-function go(node, idx) {
-  if (check[node]) return;
-  if (idx === n / 2) {
-    let aTeamAbility = 0;
-    let bTeamAbility = 0;
-    for (let i = 0; i < n; i++) {
-      for (let j = 0; j < n; j++) {
-        if (aTeam.indexOf(i) !== -1 && aTeam.indexOf(j) !== -1) aTeamAbility = aTeamAbility + abilities[i][j];
-        else if (aTeam.indexOf(i) === -1 && aTeam.indexOf(j) === -1) bTeamAbility = bTeamAbility + abilities[i][j];
-      }
-    }
-    const differential = Math.abs(aTeamAbility - bTeamAbility);
-    minimumDiff = Math.min(minimumDiff, differential);
+function go(start, idx) {
+  if (idx === k + 1) {
+    let num = "";
+    a.forEach((ele) => {
+      num += ele;
+    });
+    // console.log(num);
+    let numForCompare = Number(num);
+    if (numForCompare > max) max = num;
+    if (numForCompare < min) min = num;
     return;
   }
-  for (let i = node; i < n; i++) {
-    check[i] = true;
-    aTeam[idx] = i;
-    go(i + 1, idx + 1);
-    check[i] = false;
+  for (let i = 0; i < 10; i++) {
+    if (check[i]) continue;
+    if (idx > 0) {
+      if (inequalitySigns[idx - 1] === "<" && a[idx - 1] < i) {
+        check[i] = true;
+        a[idx] = i;
+        go(i, idx + 1);
+        check[i] = false;
+      } else if (inequalitySigns[idx - 1] === ">" && a[idx - 1] > i) {
+        check[i] = true;
+        a[idx] = i;
+        go(i, idx + 1);
+        check[i] = false;
+      }
+    } else {
+      check[i] = true;
+      a[idx] = i;
+      go(i, idx + 1);
+      check[i] = false;
+    }
   }
 }
-console.log(minimumDiff);
+console.log(max + "\n" + min);
