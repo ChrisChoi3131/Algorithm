@@ -4,46 +4,47 @@ const input = require("fs")
   .toString()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
-
-const k = Number(input[0]);
-const inequalitySigns = input[1].split(" ");
-let max = -Infinity;
-let min = Infinity;
-const check = new Array(10).fill(false);
-const a = [];
-go(0, 0);
-function go(start, idx) {
-  if (idx === k + 1) {
-    let num = "";
-    a.forEach((ele) => {
-      num += ele;
-    });
-    // console.log(num);
-    let numForCompare = Number(num);
-    if (numForCompare > max) max = num;
-    if (numForCompare < min) min = num;
-    return;
-  }
-  for (let i = 0; i < 10; i++) {
-    if (check[i]) continue;
-    if (idx > 0) {
-      if (inequalitySigns[idx - 1] === "<" && a[idx - 1] < i) {
-        check[i] = true;
-        a[idx] = i;
-        go(i, idx + 1);
-        check[i] = false;
-      } else if (inequalitySigns[idx - 1] === ">" && a[idx - 1] > i) {
-        check[i] = true;
-        a[idx] = i;
-        go(i, idx + 1);
-        check[i] = false;
-      }
-    } else {
-      check[i] = true;
-      a[idx] = i;
-      go(i, idx + 1);
-      check[i] = false;
-    }
+const n = Number(input[0]);
+input[1] = input[1].split("");
+const matrix = new Array(n).fill(0).map(() => new Array(n));
+let idx = 0;
+const ans = [];
+for (let i = 0; i < n; i++) {
+  for (let j = i; j < n; j++) {
+    matrix[i][j] = input[1][idx++];
   }
 }
-console.log(max + "\n" + min);
+
+go(0);
+console.log(ans.join(" "));
+function go(index) {
+  if (index === n) return true;
+  if (matrix[index][index] === "0") {
+    ans[index] = 0;
+    return checkAns(index) && go(index + 1);
+  }
+  for (let i = 1; i <= 10; i++) {
+    if (matrix[index][index] === "+") {
+      ans[index] = i;
+    } else if (matrix[index][index] === "-") {
+      ans[index] = -i;
+    }
+    if (checkAns(index) && go(index + 1)) return true;
+  }
+  return false;
+}
+
+function checkAns(index) {
+  let sum = 0;
+  for (let i = index; i >= 0; i--) {
+    sum += ans[i];
+    if (matrix[i][index] === "0") {
+      if (sum !== 0) return false;
+    } else if (matrix[i][index] === "+") {
+      if (sum <= 0) return false;
+    } else if (matrix[i][index] === "-") {
+      if (sum >= 0) return false;
+    }
+  }
+  return true;
+}
