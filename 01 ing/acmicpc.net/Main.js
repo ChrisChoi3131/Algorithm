@@ -7,6 +7,7 @@ const input = require("fs")
 
 const [n, k] = input[0].split(" ").map(Number);
 const time = new Array(100000 + 1).fill(0);
+const prePoint = new Array(100000 + 1);
 const q = [];
 const q_push = (ele) => {
   q[tail++] = ele;
@@ -27,9 +28,14 @@ const nextPoints = (point) => {
   if (2 * point <= 100000) nextPoints.push(2 * point);
   return nextPoints;
 };
+let route = [];
+function findRoute(point) {
+  if (point === n) return route.push(point);
+  route.push(point);
+  return findRoute(prePoint[point]);
+}
 
 q_push(n);
-time[n] = 0;
 while (q_size()) {
   const currPoint = q_pop();
   if (currPoint === k) break;
@@ -38,7 +44,10 @@ while (q_size()) {
     if (!time[nextPoint]) {
       q_push(nextPoint);
       time[nextPoint] = currTime + 1;
+      prePoint[nextPoint] = currPoint;
     }
   });
 }
+findRoute(k);
 console.log(time[k]);
+console.log(route.reverse().join(" "));
