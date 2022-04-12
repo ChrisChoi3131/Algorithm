@@ -4,50 +4,36 @@ const input = require("fs")
   .toString()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
-
-const [n, k] = input[0].split(" ").map(Number);
-const time = new Array(100000 + 1).fill(0);
-const prePoint = new Array(100000 + 1);
+const S = Number(input[0]);
 const q = [];
-const q_push = (ele) => {
-  q[tail++] = ele;
-};
-const q_pop = () => {
-  return q[head++];
-};
-const q_size = () => {
-  return tail - head;
-};
-
 let head = 0,
   tail = 0;
-const nextPoints = (point) => {
-  let nextPoints = [];
-  if (point + 1 <= 100000) nextPoints.push(point + 1);
-  if (point - 1 >= 0) nextPoints.push(point - 1);
-  if (2 * point <= 100000) nextPoints.push(2 * point);
-  return nextPoints;
-};
-let route = [];
-function findRoute(point) {
-  if (point === n) return route.push(point);
-  route.push(point);
-  return findRoute(prePoint[point]);
-}
+const q_push = (ele) => (q[tail++] = ele);
+const q_pop = () => q[head++];
+const q_size = () => tail - head;
+const dist = new Array(S + 1).fill(0).map(() => new Array(S + 1).fill(-1));
 
-q_push(n);
+q_push([1, 0]);
+dist[1][0] = 0;
 while (q_size()) {
-  const currPoint = q_pop();
-  if (currPoint === k) break;
-  const currTime = time[currPoint];
-  nextPoints(currPoint).forEach((nextPoint) => {
-    if (!time[nextPoint]) {
-      q_push(nextPoint);
-      time[nextPoint] = currTime + 1;
-      prePoint[nextPoint] = currPoint;
-    }
-  });
+  const [s, c] = q_pop();
+  if (dist[s][s] == -1) {
+    dist[s][s] = dist[s][c] + 1;
+    q_push([s, s]);
+  }
+  if (s + c <= S && dist[s + c][c] === -1) {
+    dist[s + c][c] = dist[s][c] + 1;
+    q_push([s + c, c]);
+  }
+  if (s - 1 >= 0 && dist[s - 1][c] === -1) {
+    dist[s - 1][c] = dist[s][c] + 1;
+    q_push([s - 1, c]);
+  }
 }
-findRoute(k);
-console.log(time[k]);
-console.log(route.reverse().join(" "));
+let ans = -1;
+dist[S].forEach((time) => {
+  if (time !== -1) {
+    if (ans === -1 || ans > time) ans = time;
+  }
+});
+console.log(ans);
