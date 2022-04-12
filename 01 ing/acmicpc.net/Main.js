@@ -4,36 +4,34 @@ const input = require("fs")
   .toString()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
-const S = Number(input[0]);
-const q = [];
+const [n, k] = input[0].split(" ").map(Number);
+const q = new Array(Math.max(n, k) * 2 + 1);
 let head = 0,
   tail = 0;
 const q_push = (ele) => (q[tail++] = ele);
 const q_pop = () => q[head++];
 const q_size = () => tail - head;
-const dist = new Array(S + 1).fill(0).map(() => new Array(S + 1).fill(-1));
+const time = new Array(Math.max(n, k) * 2 + 1).fill(-1);
 
-q_push([1, 0]);
-dist[1][0] = 0;
+q_push(n);
+time[n] = 0;
 while (q_size()) {
-  const [s, c] = q_pop();
-  if (dist[s][s] == -1) {
-    dist[s][s] = dist[s][c] + 1;
-    q_push([s, s]);
+  const currPoint = q_pop();
+  let nextPoint = currPoint;
+  while (currPoint !== 0 && nextPoint <= time.length) {
+    nextPoint = 2 * nextPoint;
+    if (nextPoint <= time.length && time[nextPoint] === -1) {
+      time[nextPoint] = time[currPoint];
+      q_push(nextPoint);
+    }
   }
-  if (s + c <= S && dist[s + c][c] === -1) {
-    dist[s + c][c] = dist[s][c] + 1;
-    q_push([s + c, c]);
+  if (currPoint - 1 >= 0 && time[currPoint - 1] === -1) {
+    time[currPoint - 1] = time[currPoint] + 1;
+    q_push(currPoint - 1);
   }
-  if (s - 1 >= 0 && dist[s - 1][c] === -1) {
-    dist[s - 1][c] = dist[s][c] + 1;
-    q_push([s - 1, c]);
+  if (currPoint + 1 <= k && time[currPoint + 1] === -1) {
+    time[currPoint + 1] = time[currPoint] + 1;
+    q_push(currPoint + 1);
   }
 }
-let ans = -1;
-dist[S].forEach((time) => {
-  if (time !== -1) {
-    if (ans === -1 || ans > time) ans = time;
-  }
-});
-console.log(ans);
+console.log(time[k]);
