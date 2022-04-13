@@ -4,34 +4,53 @@ const input = require("fs")
   .toString()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().split("\n");
-const [n, k] = input[0].split(" ").map(Number);
-const q = new Array(Math.max(n, k) * 2 + 1);
-let head = 0,
-  tail = 0;
-const q_push = (ele) => (q[tail++] = ele);
-const q_pop = () => q[head++];
-const q_size = () => tail - head;
-const time = new Array(Math.max(n, k) * 2 + 1).fill(-1);
+const [m, n] = input[0].split(" ").map(Number);
+const matrix = [];
+const dx = [-1, 1, 0, 0];
+const dy = [0, 0, -1, 1];
+for (let i = 1; i <= n; i++) {
+  matrix.push(input[i].split("").map(Number));
+}
+const cnt = new Array(n).fill(0).map(() => new Array(m).fill(-1));
 
-q_push(n);
-time[n] = 0;
-while (q_size()) {
-  const currPoint = q_pop();
-  let nextPoint = currPoint;
-  while (currPoint !== 0 && nextPoint <= time.length) {
-    nextPoint = 2 * nextPoint;
-    if (nextPoint <= time.length && time[nextPoint] === -1) {
-      time[nextPoint] = time[currPoint];
-      q_push(nextPoint);
+const qEmptyRoom = [];
+const qWall = [];
+qEmptyRoom.unshift([0, 0]);
+cnt[0][0] = 0;
+
+while (qEmptyRoom.length || qWall.length) {
+  while (qEmptyRoom.length) {
+    const [cx, cy] = qEmptyRoom.pop();
+    for (let i = 0; i < 4; i++) {
+      const [nx, ny] = [cx + dx[i], cy + dy[i]];
+      if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
+        if (cnt[nx][ny] === -1 && matrix[nx][ny] === 0) {
+          qEmptyRoom.unshift([nx, ny]);
+          cnt[nx][ny] = cnt[cx][cy];
+        } else if (cnt[nx][ny] === -1 && matrix[nx][ny] === 1) {
+          qWall.unshift([nx, ny]);
+          cnt[nx][ny] = cnt[cx][cy] + 1;
+        }
+      }
     }
   }
-  if (currPoint - 1 >= 0 && time[currPoint - 1] === -1) {
-    time[currPoint - 1] = time[currPoint] + 1;
-    q_push(currPoint - 1);
-  }
-  if (currPoint + 1 <= k && time[currPoint + 1] === -1) {
-    time[currPoint + 1] = time[currPoint] + 1;
-    q_push(currPoint + 1);
+  while (qWall.length) {
+    const [cx, cy] = qWall.pop();
+    let check = false;
+    for (let i = 0; i < 4; i++) {
+      const [nx, ny] = [cx + dx[i], cy + dy[i]];
+      if (nx >= 0 && ny >= 0 && nx < n && ny < m) {
+        if (cnt[nx][ny] === -1 && matrix[nx][ny] === 0) {
+          qEmptyRoom.unshift([nx, ny]);
+          cnt[nx][ny] = cnt[cx][cy];
+          check = true;
+        } else if (cnt[nx][ny] === -1 && matrix[nx][ny] === 1) {
+          qWall.unshift([nx, ny]);
+          cnt[nx][ny] = cnt[cx][cy] + 1;
+        }
+      }
+    }
+    if (check) break;
   }
 }
-console.log(time[k]);
+console.log(cnt[n - 1][m - 1]);
