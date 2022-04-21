@@ -5,32 +5,54 @@ const input = require("fs")
   .trim()
   .split("\n");
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
+
 const n = Number(input[0]);
-const tree = new Array(n + 1).fill(0).map(() => new Array());
-input.splice(1, n).forEach((line) => {
-  const [x, y, dis] = line.split(" ").map(Number);
-  tree[x].push({ to: y, dis });
-  tree[y].push({ to: x, dis });
+const tree = new Array(n).fill(0).map(() => new Array());
+const check = new Array(n).fill(0);
+const distance = new Array(n).fill(0);
+const root = 0;
+
+input.splice(1, n + 1).forEach((line) => {
+  const [x, y] = line.split(" ").map((node) => Number(node) - 1);
+  tree[x].push(y);
+  tree[y].push(x);
 });
-let root = 1;
-let distance = new Array(n + 1).fill(0);
-dfs(root);
-function dfs(from) {
-  tree[from].forEach((node) => {
-    const { to, dis } = node;
-    if (distance[to] === 0 && to !== root) {
-      distance[to] = distance[from] + dis;
-      dfs(to);
+
+go(root, -1);
+function go(node, parent) {
+  if (check[node] === 1) return node;
+  check[node] = 1;
+
+  for (const child of tree[node]) {
+    if (child === parent) continue;
+    const res = go(child, node);
+    if (res === -2) return -2;
+    if (res >= 0) {
+      check[node] = 2;
+      if (node === res) return -2;
+      else return res;
     }
-  });
+  }
+  return -1;
 }
-let maxDis = 0;
-for (let i = 1; i <= n; i++) {
-  if (maxDis < distance[i]) {
-    root = i;
-    maxDis = distance[i];
+const q = [];
+let head = 0,
+  tail = 0;
+const q_push = (node) => (q[tail++] = node);
+const q_pop = () => q[head++];
+const q_size = () => tail - head;
+
+for (let i = 0; i < check.length; i++) {
+  if (check[i] === 2) q_push(i);
+}
+
+while (q_size()) {
+  const node = q_pop();
+  for (const child of tree[node]) {
+    if (check[child] !== 2 && distance[child] === 0) {
+      q_push(child);
+      distance[child] = distance[node] + 1;
+    }
   }
 }
-distance = new Array(n + 1).fill(0);
-dfs(root);
-console.log(Math.max(...distance));
+console.log(distance.join(" "));
