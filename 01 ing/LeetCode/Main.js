@@ -1,56 +1,36 @@
-/**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
- * @param {ListNode} l1
- * @param {ListNode} l2
- * @return {ListNode}
- */
+const logs = ["a1 9 2 3 1", "g1 act car", "zo4 4 7", "ab1 off key dog", "a8 act zoo", "a2 act car"];
 
-function ListNode(val, next) {
-  this.val = val === undefined ? 0 : val;
-  this.next = next === undefined ? null : next;
-}
-
-let l1 = new ListNode(9);
-let current = l1;
-for (let i = 0; i < 6; i++) {
-  current.next = new ListNode(9);
-  current = current.next;
-}
-let l2 = new ListNode(9);
-current = l2;
-for (let i = 0; i < 4; i++) {
-  current.next = new ListNode(9);
-  current = current.next;
-}
-const addTwoNumbers = function (l1, l2) {
-  const List = new ListNode(0);
-  let current = List;
-  let sum = 0;
-  let carry = 0;
-  while (l1 !== null || l2 !== null || sum > 0) {
-    if (l1 !== null) {
-      sum = sum + l1.val;
-      l1 = l1.next;
+const reorderLogFiles = function (logs) {
+  const logDigit = [];
+  const logLetter = [];
+  logs.forEach((log) => {
+    const [prefix, ...words] = log.split(" ");
+    if (words[0].charCodeAt() >= 48 && words[0].charCodeAt() <= 57) {
+      logDigit.push(log);
+    } else {
+      logLetter.push(log);
     }
-    if (l2 !== null) {
-      sum = sum + l2.val;
-      l2 = l2.next;
+  });
+  logLetter.sort((logFirst, logSecond) => {
+    const [prefixOfFirst, ...wordsOfFirst] = logFirst.split(" ");
+    const [prefixOfSecond, ...wordsOfSecond] = logSecond.split(" ");
+    for (let i = 0; i < Math.max(wordsOfFirst.length, wordsOfSecond.length); i++) {
+      if (wordsOfFirst[i] < wordsOfSecond[i]) return -1;
+      else if (wordsOfFirst[i] > wordsOfSecond[i]) return 1;
+      else {
+        if (i < Math.min(wordsOfFirst.length, wordsOfSecond.length) - 1) continue;
+        else {
+          if (wordsOfFirst.length < wordsOfSecond.length) return -1;
+          else if (wordsOfFirst.length > wordsOfSecond.length) return 1;
+          else {
+            if (prefixOfFirst < prefixOfSecond) return -1;
+            else if (prefixOfFirst > prefixOfSecond) return 1;
+            else return 0;
+          }
+        }
+      }
     }
-    if (sum >= 10) {
-      carry = 1;
-      sum = sum - 10;
-    }
-    current.next = new ListNode(sum);
-    current = current.next;
-    sum = carry;
-    carry = 0;
-  }
-  return List.next;
+  });
+  return logLetter.concat(logDigit);
 };
-console.log(addTwoNumbers(l1, l2));
+console.log(reorderLogFiles(logs));
