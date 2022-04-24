@@ -1,45 +1,34 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
- * @param {ListNode} head
+ * @param {number[][]} boxTypes
+ * @param {number} truckSize
  * @return {number}
  */
 
-class ListNode {
-  constructor(val, next) {
-    this.val = val === undefined ? 0 : val;
-    this.next = next === undefined ? null : next;
-  }
-}
-const arr = [1, 2, 3, 4];
-const head = new ListNode(arr[0]);
-let curr = head;
-for (let i = 1; i < arr.length; i++) {
-  curr.next = new ListNode(arr[i]);
-  curr = curr.next;
-}
+const boxTypes = [
+    [5, 10],
+    [2, 5],
+    [4, 7],
+    [3, 9],
+  ],
+  truckSize = 10;
 
-const pairSum = function (head) {
-  let slow = head;
-  let fast = head.next;
-  const stack = [];
-  while (fast && slow) {
-    stack.push(slow.val);
-    slow = slow.next;
-    fast = fast.next?.next;
+const maximumUnits = function (boxTypes, truckSize) {
+  boxTypes.sort((a, b) => {
+    const [unitsOfA, unitsOfB] = [a[1], b[1]];
+    return unitsOfB - unitsOfA;
+  });
+  let cntLoadedBox = 0;
+  let cntUnitOfLoadedBox = 0;
+  for (let i = 0; i < boxTypes.length; i++) {
+    let numOfBox = boxTypes[i][0];
+    const numOfUnitsPerBox = boxTypes[i][1];
+    while (numOfBox !== 0) {
+      cntLoadedBox++;
+      cntUnitOfLoadedBox += numOfUnitsPerBox;
+      if (cntLoadedBox === truckSize) return cntUnitOfLoadedBox;
+      numOfBox--;
+    }
   }
-  let maxSum = 0;
-  while (slow) {
-    const sum = slow.val + stack.pop();
-    maxSum < sum ? (maxSum = sum) : null;
-    slow = slow.next;
-  }
-  return maxSum;
+  return cntUnitOfLoadedBox;
 };
-
-console.log(pairSum(head));
+console.log(maximumUnits(boxTypes, truckSize));
