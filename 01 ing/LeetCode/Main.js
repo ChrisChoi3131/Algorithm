@@ -1,28 +1,45 @@
-const s = "(()";
-// const s = "(()()";
-// const s = ")(((((()())()()))()(()))(";
-//         0123456789012345678901234
 /**
- * @param {string} s
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
  * @return {number}
  */
-const longestValidParentheses = function (s) {
-  const brackets = s.split("");
-  const stack = [];
-  const hashmap = {};
-  for (let i = 0; i < brackets.length; i++) {
-    if (brackets[i] === "(") {
-      stack.push(i);
-    } else if (brackets[i] === ")" && stack.length) {
-      const idxLeftBracket = stack.pop();
-      if (brackets[i - 1] === "(") {
-        hashmap[i] = hashmap[idxLeftBracket - 1] ? hashmap[idxLeftBracket - 1] + 2 : 2;
-      } else if (brackets[i - 1] === ")") {
-        hashmap[i] = hashmap[i - 1] + 2 + (hashmap[idxLeftBracket - 1] ? hashmap[idxLeftBracket - 1] : 0);
-      }
-    }
+
+class ListNode {
+  constructor(val, next) {
+    this.val = val === undefined ? 0 : val;
+    this.next = next === undefined ? null : next;
   }
-  return Object.keys(hashmap).length ? Math.max(...Object.values(hashmap)) : 0;
+}
+const arr = [1, 2, 3, 4];
+const head = new ListNode(arr[0]);
+let curr = head;
+for (let i = 1; i < arr.length; i++) {
+  curr.next = new ListNode(arr[i]);
+  curr = curr.next;
+}
+
+const pairSum = function (head) {
+  let slow = head;
+  let fast = head.next;
+  const stack = [];
+  while (fast && slow) {
+    stack.push(slow.val);
+    slow = slow.next;
+    fast = fast.next?.next;
+  }
+  let maxSum = 0;
+  while (slow) {
+    const sum = slow.val + stack.pop();
+    maxSum < sum ? (maxSum = sum) : null;
+    slow = slow.next;
+  }
+  return maxSum;
 };
 
-console.log(longestValidParentheses(s));
+console.log(pairSum(head));
