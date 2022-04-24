@@ -1,24 +1,28 @@
-const s = "([)]";
-
-const isValid = function (s) {
-  const brackets = [];
-  const allBrackets = s.split("");
-  for (let i = 0; i < allBrackets.length; i++) {
-    const bracket = allBrackets[i];
-    if (bracket === "(") brackets.push("(");
-    else if (bracket === "{") brackets.push("{");
-    else if (bracket === "[") brackets.push("[");
-    else if (bracket === ")") {
-      if (brackets[brackets.length - 1] === "(") brackets.pop();
-      else return false;
-    } else if (bracket === "}") {
-      if (brackets[brackets.length - 1] === "{") brackets.pop();
-      else return false;
-    } else if (bracket === "]") {
-      if (brackets[brackets.length - 1] === "[") brackets.pop();
-      else return false;
+const s = "(()";
+// const s = "(()()";
+// const s = ")(((((()())()()))()(()))(";
+//         0123456789012345678901234
+/**
+ * @param {string} s
+ * @return {number}
+ */
+const longestValidParentheses = function (s) {
+  const brackets = s.split("");
+  const stack = [];
+  const hashmap = {};
+  for (let i = 0; i < brackets.length; i++) {
+    if (brackets[i] === "(") {
+      stack.push(i);
+    } else if (brackets[i] === ")" && stack.length) {
+      const idxLeftBracket = stack.pop();
+      if (brackets[i - 1] === "(") {
+        hashmap[i] = hashmap[idxLeftBracket - 1] ? hashmap[idxLeftBracket - 1] + 2 : 2;
+      } else if (brackets[i - 1] === ")") {
+        hashmap[i] = hashmap[i - 1] + 2 + (hashmap[idxLeftBracket - 1] ? hashmap[idxLeftBracket - 1] : 0);
+      }
     }
   }
-  return brackets.length ? false : true;
+  return Object.keys(hashmap).length ? Math.max(...Object.values(hashmap)) : 0;
 };
-console.log(isValid(s));
+
+console.log(longestValidParentheses(s));
