@@ -1,34 +1,23 @@
 /**
- * @param {number[][]} boxTypes
- * @param {number} truckSize
+ * @param {string} s
  * @return {number}
  */
 
-const boxTypes = [
-    [5, 10],
-    [2, 5],
-    [4, 7],
-    [3, 9],
-  ],
-  truckSize = 10;
-
-const maximumUnits = function (boxTypes, truckSize) {
-  boxTypes.sort((a, b) => {
-    const [unitsOfA, unitsOfB] = [a[1], b[1]];
-    return unitsOfB - unitsOfA;
-  });
-  let cntLoadedBox = 0;
-  let cntUnitOfLoadedBox = 0;
-  for (let i = 0; i < boxTypes.length; i++) {
-    let numOfBox = boxTypes[i][0];
-    const numOfUnitsPerBox = boxTypes[i][1];
-    while (numOfBox !== 0) {
-      cntLoadedBox++;
-      cntUnitOfLoadedBox += numOfUnitsPerBox;
-      if (cntLoadedBox === truckSize) return cntUnitOfLoadedBox;
-      numOfBox--;
+const s = "aabb";
+const firstUniqChar = function (s) {
+  const hashmap = {};
+  s.split("").map((char, idx) => {
+    if (hashmap[char.charCodeAt()]) {
+      hashmap[char.charCodeAt()] = { cnt: hashmap[char.charCodeAt()].cnt + 1, idx };
+    } else {
+      hashmap[char.charCodeAt()] = { cnt: 1, idx };
     }
+  });
+  let idxFirstUniChar = s.length;
+  for (const charCode in hashmap) {
+    if (hashmap[charCode].cnt === 1 && idxFirstUniChar > hashmap[charCode].idx) idxFirstUniChar = hashmap[charCode].idx;
   }
-  return cntUnitOfLoadedBox;
+  return idxFirstUniChar !== s.length ? idxFirstUniChar : -1;
 };
-console.log(maximumUnits(boxTypes, truckSize));
+
+console.log(firstUniqChar(s));
