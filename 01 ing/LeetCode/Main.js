@@ -1,37 +1,38 @@
 /**
- * @param {string} s
- * @return {number}
+ * @param {number[][]} moves
+ * @return {string}
  */
-
-const s = '00011100';
-const countBinarySubstrings = function (s) {
-  let cntSubString = 0,
-    idxCurNum = 0,
-    idxNextNum = 1,
-    cntCurNum = 0,
-    cntNextNum = 0;
-  while (true) {
-    cntCurNum = 0;
-    cntNextNum = 0;
-    for (let i = idxCurNum; i < s.length; i++) {
-      if (s[i] === s[idxCurNum]) cntCurNum++;
-      else {
-        idxNextNum = i;
-        break;
-      }
+const moves = [
+  [
+    [0, 0],
+    [1, 1],
+  ],
+];
+const tictactoe = function (moves) {
+  const row = new Array(3).fill(0);
+  const col = new Array(3).fill(0);
+  let diag = 0;
+  let antiDiag = 0;
+  let player = 1;
+  for (let i = 0; i < moves.length; i++) {
+    const [x, y] = moves[i];
+    row[x] += player;
+    col[y] += player;
+    if (x === y) diag += player;
+    if (x + y === 2) antiDiag += player;
+    const winningConditions = [
+      Math.abs(row[x]) === 3,
+      Math.abs(col[y]) === 3,
+      Math.abs(diag) === 3,
+      Math.abs(antiDiag) === 3,
+    ];
+    if (winningConditions.includes(true)) {
+      if (i % 2 === 0) return 'A';
+      else return 'B';
     }
-    if (idxCurNum + cntCurNum === s.length) return cntSubString;
-    for (let i = idxNextNum; i < s.length; i++) {
-      if (s[i] === s[idxNextNum]) cntNextNum++;
-      else {
-        idxCurNum = idxNextNum;
-        break;
-      }
-    }
-    idxCurNum = idxNextNum;
-    cntSubString += Math.min(cntCurNum, cntNextNum);
+    player *= -1;
   }
-  return cntSubString;
+  if (moves.length === 9) return 'Draw';
+  else return 'Pending';
 };
-
-console.log(countBinarySubstrings(s));
+console.log(tictactoe(moves));
