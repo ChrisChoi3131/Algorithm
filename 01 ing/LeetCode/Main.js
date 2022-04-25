@@ -1,38 +1,57 @@
 /**
- * @param {number[][]} moves
- * @return {string}
+ * @param {number} n
  */
-const moves = [
-  [
-    [0, 0],
-    [1, 1],
-  ],
-];
-const tictactoe = function (moves) {
-  const row = new Array(3).fill(0);
-  const col = new Array(3).fill(0);
-  let diag = 0;
-  let antiDiag = 0;
-  let player = 1;
-  for (let i = 0; i < moves.length; i++) {
-    const [x, y] = moves[i];
-    row[x] += player;
-    col[y] += player;
-    if (x === y) diag += player;
-    if (x + y === 2) antiDiag += player;
-    const winningConditions = [
-      Math.abs(row[x]) === 3,
-      Math.abs(col[y]) === 3,
-      Math.abs(diag) === 3,
-      Math.abs(antiDiag) === 3,
-    ];
-    if (winningConditions.includes(true)) {
-      if (i % 2 === 0) return 'A';
-      else return 'B';
-    }
-    player *= -1;
+class TicTacToe {
+  constructor(n) {
+    this.n = n;
+    this.rows = new Array(n).fill(0);
+    this.cols = new Array(n).fill(0);
+    this.diags = 0;
+    this.antiDiags = 0;
   }
-  if (moves.length === 9) return 'Draw';
-  else return 'Pending';
+}
+
+/**
+ * @param {number} row
+ * @param {number} col
+ * @param {number} player
+ * @return {number}
+ */
+TicTacToe.prototype.move = function (row, col, player) {
+  let dir = 1;
+  player === 2 ? (dir = -1) : null;
+  this.rows[row] += dir;
+  this.cols[col] += dir;
+  if (row === col) this.diags += dir;
+  if (row + col === this.n - 1) this.antiDiags += dir;
+  const conditionsWin = [
+    Math.abs(this.rows[row]) === this.n,
+    Math.abs(this.cols[col]) === this.n,
+    Math.abs(this.diags) === this.n,
+    Math.abs(this.antiDiags) === this.n,
+  ];
+  if (conditionsWin.includes(true)) return player;
+  else return 0;
 };
-console.log(tictactoe(moves));
+
+const n = 3;
+
+const input = [
+  [0, 0, 1],
+  [0, 2, 2],
+  [2, 2, 1],
+  [1, 1, 2],
+  [2, 0, 1],
+  [1, 0, 2],
+  [2, 1, 1],
+];
+const obj = new TicTacToe(n);
+for (let i = 0; i < input.length; i++) {
+  console.log(obj.move(...input[i]));
+}
+console.log();
+/**
+ * Your TicTacToe object will be instantiated and called as such:
+ * var obj = new TicTacToe(n)
+ * var param_1 = obj.move(row,col,player)
+ */
