@@ -3,21 +3,35 @@
  * @return {number}
  */
 
-const s = "aabb";
-const firstUniqChar = function (s) {
-  const hashmap = {};
-  s.split("").map((char, idx) => {
-    if (hashmap[char.charCodeAt()]) {
-      hashmap[char.charCodeAt()] = { cnt: hashmap[char.charCodeAt()].cnt + 1, idx };
-    } else {
-      hashmap[char.charCodeAt()] = { cnt: 1, idx };
+const s = '00011100';
+const countBinarySubstrings = function (s) {
+  let cntSubString = 0,
+    idxCurNum = 0,
+    idxNextNum = 1,
+    cntCurNum = 0,
+    cntNextNum = 0;
+  while (true) {
+    cntCurNum = 0;
+    cntNextNum = 0;
+    for (let i = idxCurNum; i < s.length; i++) {
+      if (s[i] === s[idxCurNum]) cntCurNum++;
+      else {
+        idxNextNum = i;
+        break;
+      }
     }
-  });
-  let idxFirstUniChar = s.length;
-  for (const charCode in hashmap) {
-    if (hashmap[charCode].cnt === 1 && idxFirstUniChar > hashmap[charCode].idx) idxFirstUniChar = hashmap[charCode].idx;
+    if (idxCurNum + cntCurNum === s.length) return cntSubString;
+    for (let i = idxNextNum; i < s.length; i++) {
+      if (s[i] === s[idxNextNum]) cntNextNum++;
+      else {
+        idxCurNum = idxNextNum;
+        break;
+      }
+    }
+    idxCurNum = idxNextNum;
+    cntSubString += Math.min(cntCurNum, cntNextNum);
   }
-  return idxFirstUniChar !== s.length ? idxFirstUniChar : -1;
+  return cntSubString;
 };
 
-console.log(firstUniqChar(s));
+console.log(countBinarySubstrings(s));

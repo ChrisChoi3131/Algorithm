@@ -6,16 +6,17 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
-  plugins: ["prettier"],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  plugins: ['prettier'],
   rules: {
-    "prettier/prettier": [
-      "error",
+    'prettier/prettier': [
+      'error',
       {
         printWidth: 120,
-        singleQuote: false,
+        singleQuote: true,
         useTabs: false,
         tabWidth: 2,
+        arrowParens: 'avoid',
       },
     ],
   },
