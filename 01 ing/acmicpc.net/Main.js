@@ -5,32 +5,41 @@ const input = require('fs')
   .trim()
   .split('\n');
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const n = Number(input[0]);
-const abilities = [];
+const [n, m] = input[0].split(' ').map(Number);
+const paper = [];
 for (let i = 1; i <= n; i++) {
-  abilities.push(input[i].split(' ').map(Number));
+  paper.push(input[i].split('').map(Number));
 }
 
-let ans = Infinity;
-for (let i = 1; i < 1 << n; i++) {
-  const first = [];
-  const second = [];
-
-  for (let j = 0; j < n; j++) {
-    if (i & (1 << j)) first.push(j);
-    else second.push(j);
-  }
-  if (first.length !== n / 2) continue;
-
-  let abilitiesFirst = 0;
-  let abilitiesSecond = 0;
-  for (let j = 0; j < n / 2; j++) {
-    for (let k = 0; k < n / 2; k++) {
-      abilitiesFirst += abilities[first[j]][first[k]];
-      abilitiesSecond += abilities[second[j]][second[k]];
+let ans = 0;
+for (let s = 0; s < 1 << (n * m); s++) {
+  let sum = 0;
+  for (let i = 0; i < n; i++) {
+    let cur = 0;
+    for (let j = 0; j < m; j++) {
+      const k = i * m + j;
+      if ((s & (1 << k)) === 0) {
+        cur = cur * 10 + paper[i][j];
+      } else {
+        sum += cur;
+        cur = 0;
+      }
     }
+    sum += cur;
   }
-  const abilityDiff = Math.abs(abilitiesFirst - abilitiesSecond);
-  if (ans > Math.abs(abilitiesFirst - abilitiesSecond)) ans = abilityDiff;
+  for (let j = 0; j < m; j++) {
+    let cur = 0;
+    for (let i = 0; i < n; i++) {
+      const k = i * m + j;
+      if ((s & (1 << k)) !== 0) {
+        cur = 10 * cur + paper[i][j];
+      } else {
+        sum += cur;
+        cur = 0;
+      }
+    }
+    sum += cur;
+  }
+  ans < sum ? (ans = sum) : null;
 }
 console.log(ans);
