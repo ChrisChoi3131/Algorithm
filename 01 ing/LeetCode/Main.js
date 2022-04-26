@@ -21,6 +21,5 @@ const length = 10,
     [2, 4, 6],
     [5, 6, 8],
     [1, 9, -4],
-  ];
-
+  
 console.log(getModifiedArray(length, updates));
