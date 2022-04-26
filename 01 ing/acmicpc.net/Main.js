@@ -6,28 +6,15 @@ const input = require('fs')
   .split('\n');
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 
-const m = Number(input[0]);
-const n = 21;
-let s = 0;
-const ans = [];
-for (let i = 1; i <= m; i++) {
-  const cmd = input[i].split(' ')[0];
-  let x = Number(input[i].split(' ')[1]);
-  const set = new Array(n).fill(0);
+const [n, s] = input[0].split(' ').map(Number);
+const arr = input[1].split(' ').map(Number);
 
-  if (cmd === 'add') {
-    s = s | (1 << x);
-  } else if (cmd === 'remove') {
-    s = s & ~(1 << x);
-  } else if (cmd === 'check') {
-    if (1 << x === (s & (1 << x))) ans.push(1);
-    else ans.push(0);
-  } else if (cmd === 'toggle') {
-    s = s ^ (1 << x);
-  } else if (cmd === 'all') {
-    s = (1 << n) - 1;
-  } else if (cmd === 'empty') {
-    s = 0;
+let cnt = 0;
+for (let i = 1; i < 1 << n; i++) {
+  let sum = 0;
+  for (let j = 0; j < n; j++) {
+    if (i & (1 << j)) sum += arr[j];
   }
+  if (s === sum) cnt++;
 }
-console.log(ans.join('\n'));
+console.log(cnt);
