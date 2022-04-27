@@ -5,41 +5,41 @@ const input = require('fs')
   .trim()
   .split('\n');
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const [n, m] = input[0].split(' ').map(Number);
-const paper = [];
-for (let i = 1; i <= n; i++) {
-  paper.push(input[i].split('').map(Number));
+const n = Number(input[0]);
+const signs = input[1].split(' ');
+const check = new Array(10).fill(false);
+let a = new Array(n + 1).fill(0);
+let minNum = Infinity;
+let maxNum = -Infinity;
+for (let num = 0; num < 10; num++) {
+  a[0] = num;
+  check[num] = true;
+  go(1);
+  check[num] = false;
 }
 
-let ans = 0;
-for (let s = 0; s < 1 << (n * m); s++) {
-  let sum = 0;
-  for (let i = 0; i < n; i++) {
-    let cur = 0;
-    for (let j = 0; j < m; j++) {
-      const k = i * m + j;
-      if ((s & (1 << k)) === 0) {
-        cur = cur * 10 + paper[i][j];
-      } else {
-        sum += cur;
-        cur = 0;
-      }
+function go(idx) {
+  if (idx === n + 1) {
+    let num = 0;
+    for (let i = n; i >= 0; i--) {
+      num += a[n - i] * Math.pow(10, i);
     }
-    sum += cur;
+    maxNum < num ? (maxNum = num) : null;
+    minNum > num ? (minNum = num) : null;
+    return;
   }
-  for (let j = 0; j < m; j++) {
-    let cur = 0;
-    for (let i = 0; i < n; i++) {
-      const k = i * m + j;
-      if ((s & (1 << k)) !== 0) {
-        cur = 10 * cur + paper[i][j];
-      } else {
-        sum += cur;
-        cur = 0;
-      }
+  for (let i = 0; i < 10; i++) {
+    if (check[i]) continue;
+    if (signs[idx - 1] === '<') {
+      if (a[idx - 1] >= i) continue;
+    } else if (signs[idx - 1] === '>') {
+      if (a[idx - 1] <= i) continue;
     }
-    sum += cur;
+    a[idx] = i;
+    check[i] = true;
+    go(idx + 1);
+    check[i] = false;
   }
-  ans < sum ? (ans = sum) : null;
 }
-console.log(ans);
+maxNum.toString().length === n + 1 ? console.log(maxNum) : console.log('0' + maxNum);
+minNum.toString().length === n + 1 ? console.log(minNum) : console.log('0' + minNum);
