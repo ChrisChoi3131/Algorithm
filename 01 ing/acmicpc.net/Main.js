@@ -6,40 +6,38 @@ const input = require('fs')
   .split('\n');
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 const n = Number(input[0]);
-const nums = input[1].split(' ').map(Number);
-const maxOperators = input[2].split(' ').map(Number);
-const mapOperators = { 0: '+', 1: '-', 2: '*', 3: '/' };
-const cntOperators = [0, 0, 0, 0];
-const operators = [];
-let maxNum = -Infinity;
-let minNum = Infinity;
+const words = input.splice(1, n + 1).map(word => word.split(''));
+const checkNums = new Array(10).fill(false);
+const map = {};
+const nums = [];
+words.forEach(word => {
+  word.map(char => (map[char] = -1));
+});
+let maxSum = -Infinity;
+const alphabets = Object.keys(map);
+const end = alphabets.length === 9 ? 0 : 10 - alphabets.length;
 go(0);
+console.log(maxSum);
 function go(idx) {
-  if (idx === n - 1) {
-    let num = nums[0];
-    for (let i = 0; i < nums.length - 1; i++) {
-      const operator = mapOperators[operators[i]];
-      operator === '+' ? (num = num + nums[i + 1]) : null;
-      operator === '-' ? (num = num - nums[i + 1]) : null;
-      operator === '*' ? (num = num * nums[i + 1]) : null;
-      if (operator === '/') {
-        const rem = num % nums[i + 1];
-        num = (num - rem) / nums[i + 1];
-      }
+  if (idx === alphabets.length) {
+    for (let i = 0; i < alphabets.length; i++) {
+      map[alphabets[i]] = nums[i];
     }
-    maxNum < num ? (maxNum = num) : null;
-    minNum > num ? (minNum = num) : null;
+    let sum = 0;
+    words.forEach(word => {
+      for (let i = 0; i < word.length; i++) {
+        sum += map[word[i]] * Math.pow(10, word.length - i - 1);
+      }
+    });
+    maxSum < sum ? (maxSum = sum) : null;
     return;
   }
 
-  for (const operator in mapOperators) {
-    if (cntOperators[operator] < maxOperators[operator]) {
-      cntOperators[operator]++;
-      operators[idx] = operator;
-      go(idx + 1);
-      cntOperators[operator]--;
-    }
+  for (let i = 9; i >= end; i--) {
+    if (checkNums[i] === true) continue;
+    checkNums[i] = true;
+    nums[idx] = i;
+    go(idx + 1);
+    checkNums[i] = false;
   }
 }
-console.log(maxNum);
-console.log(minNum);
