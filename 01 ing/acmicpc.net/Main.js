@@ -5,39 +5,36 @@ const input = require('fs')
   .trim()
   .split('\n');
 // const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const n = Number(input[0]);
-const words = input.splice(1, n + 1).map(word => word.split(''));
-const checkNums = new Array(10).fill(false);
-const map = {};
-const nums = [];
-words.forEach(word => {
-  word.map(char => (map[char] = -1));
-});
-let maxSum = -Infinity;
-const alphabets = Object.keys(map);
-const end = alphabets.length === 9 ? 0 : 10 - alphabets.length;
-go(0);
-console.log(maxSum);
-function go(idx) {
-  if (idx === alphabets.length) {
-    for (let i = 0; i < alphabets.length; i++) {
-      map[alphabets[i]] = nums[i];
-    }
-    let sum = 0;
-    words.forEach(word => {
-      for (let i = 0; i < word.length; i++) {
-        sum += map[word[i]] * Math.pow(10, word.length - i - 1);
-      }
-    });
-    maxSum < sum ? (maxSum = sum) : null;
+
+const ans = [];
+let check = [];
+let arr = [];
+let map = {};
+for (let i = 0; i < input.length - 1; i++) {
+  map = {};
+  const s = input[i].split(' ').map(Number).splice(1, input[i].split(' ').length);
+  s.forEach((element, idx) => {
+    map[idx] = element;
+  });
+  check = new Array(s.length).fill(false);
+  arr = [];
+  go(s, 0, 0);
+  console.log('');
+}
+
+function go(s, idx, start) {
+  if (idx === 6) {
+    const line = [];
+    arr.map(idx => line.push(map[idx]));
+    console.log(line.join(' '));
     return;
   }
-
-  for (let i = 9; i >= end; i--) {
-    if (checkNums[i] === true) continue;
-    checkNums[i] = true;
-    nums[idx] = i;
-    go(idx + 1);
-    checkNums[i] = false;
+  for (let i = 0; i < s.length; i++) {
+    if (check[i]) continue;
+    if (arr[idx - 1] > i) continue;
+    check[i] = true;
+    arr[idx] = i;
+    go(s, idx + 1);
+    check[i] = false;
   }
 }
