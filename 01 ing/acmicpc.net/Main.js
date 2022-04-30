@@ -5,41 +5,43 @@ const input = require('fs')
   .trim()
   .split('\n');
 //const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
-const n = Number(input[0]);
-const nums = input[1].split(' ').map(Number);
-const maxOperators = input[2].split(' ').map(Number);
-const mapOperators = { 0: '+', 1: '-', 2: '*', 3: '/' };
-const cntOperators = [0, 0, 0, 0];
-const operators = [];
-let maxNum = -Infinity;
-let minNum = Infinity;
-go(0);
-function go(idx) {
-  if (idx === n - 1) {
-    let num = nums[0];
-    for (let i = 0; i < nums.length - 1; i++) {
-      const operator = mapOperators[operators[i]];
-      operator === '+' ? (num = num + nums[i + 1]) : null;
-      operator === '-' ? (num = num - nums[i + 1]) : null;
-      operator === '*' ? (num = num * nums[i + 1]) : null;
-      if (operator === '/') {
-        const rem = num % nums[i + 1];
-        num = (num - rem) / nums[i + 1];
-      }
-    }
-    maxNum < num ? (maxNum = num) : null;
-    minNum > num ? (minNum = num) : null;
-    return;
-  }
 
-  for (const operator in mapOperators) {
-    if (cntOperators[operator] < maxOperators[operator]) {
-      cntOperators[operator]++;
-      operators[idx] = operator;
-      go(idx + 1);
-      cntOperators[operator]--;
-    }
+const [wall, space, coin] = ['#', '.', 'o'];
+const dx = [-1, 1, 0, 0];
+const dy = [0, 0, -1, 1];
+const [n, m] = input[0].split(' ').map(Number);
+const board = input.splice(1, n + 1).map(ele => ele.split(''));
+const coins = [];
+for (let i = 0; i < n; i++) {
+  for (let j = 0; j < m; j++) {
+    if (board[i][j] === coin) coins.push([i, j]);
   }
 }
-console.log(maxNum);
-console.log(minNum);
+
+console.log(go(0, ...coins[0], ...coins[1]));
+
+function go(idx, x1, y1, x2, y2) {
+  if (idx === 11) return -1;
+  let [isDropFirst, isDropSecond] = [false, false];
+  if (x1 < 0 || y1 < 0 || x1 >= n || y1 >= m) isDropFirst = true;
+  if (x2 < 0 || y2 < 0 || x2 >= n || y2 >= m) isDropSecond = true;
+  if (isDropFirst && isDropSecond) return -1;
+  if (isDropFirst || isDropSecond) return idx;
+
+  let ans = -1;
+  for (let i = 0; i < 4; i++) {
+    let [nx1, ny1, nx2, ny2] = [x1 + dx[i], y1 + dy[i], x2 + dx[i], y2 + dy[i]];
+    if (nx1 >= 0 && ny1 >= 0 && nx1 < n && ny1 < m && board[nx1][ny1] === wall) {
+      nx1 = x1;
+      ny1 = y1;
+    }
+    if (nx2 >= 0 && ny2 >= 0 && nx2 < n && ny2 < m && board[nx2][ny2] === wall) {
+      nx2 = x2;
+      ny2 = y2;
+    }
+    const res = go(idx + 1, nx1, ny1, nx2, ny2);
+    if (res === -1) continue;
+    if (ans === -1 || ans > res) ans = res;
+  }
+  return ans;
+}
