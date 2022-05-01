@@ -6,26 +6,29 @@ const input = require('fs')
   .split('\n');
 //const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 const n = Number(input[0]);
-const heap = new Array(n + 1).fill(-Infinity);
-let idxH = 0;
+const heap = new Array(n + 1).fill(Infinity);
+let idxHeap = 0;
+
 const h_push = num => {
-  heap[++idxH] = num;
-  for (let i = idxH; i > 1; i = Math.floor(i / 2)) {
-    if (heap[i] > heap[Math.floor(i / 2)]) {
-      const tmp = heap[Math.floor(i / 2)];
-      heap[Math.floor(i / 2)] = heap[i];
-      heap[i] = tmp;
+  heap[++idxHeap] = num;
+  for (let i = idxHeap; i > 1; i = Math.floor(i / 2)) {
+    if (heap[i] < heap[Math.floor(i / 2)]) {
+      const tmp = heap[i];
+      heap[i] = heap[Math.floor(i / 2)];
+      heap[Math.floor(i / 2)] = tmp;
     } else break;
   }
 };
+
 const h_pop = () => {
-  if (idxH === 0) return 0;
+  if (idxHeap === 0) return 0;
   const num = heap[1];
-  heap[1] = heap[idxH];
-  heap[idxH--] = -Infinity;
-  for (let i = 1; i * 2 <= idxH; ) {
-    if (heap[i] > heap[i * 2] && heap[i] > heap[i * 2 + 1]) break;
-    else if (heap[i * 2] > heap[i * 2 + 1]) {
+  heap[1] = heap[idxHeap];
+  heap[idxHeap--] = Infinity;
+
+  for (let i = 1; i * 2 <= idxHeap; ) {
+    if (heap[i] < heap[i * 2] && heap[i] < heap[i * 2 + 1]) break;
+    else if (heap[i * 2] < heap[i * 2 + 1]) {
       const tmp = heap[i];
       heap[i] = heap[i * 2];
       heap[i * 2] = tmp;
@@ -37,6 +40,7 @@ const h_pop = () => {
       i = i * 2 + 1;
     }
   }
+
   return num;
 };
 let ans = '';
