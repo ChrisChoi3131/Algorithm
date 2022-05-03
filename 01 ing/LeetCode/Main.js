@@ -1,12 +1,21 @@
-const nums1 = [1, 2, 2, 1],
-  nums2 = [2, 2];
+/**
+ * @param {number} n
+ * @return {boolean}
+ */
 
-const intersection = function (nums1, nums2) {
+const isHappy = function (n) {
   const set = new Set();
-  const intersection = new Set();
-  for (const num of nums1) set.add(num);
-  for (const num of nums2) if (set.has(num)) intersection.add(num, num);
-  return [...intersection];
+  while (n !== 1) {
+    set.add(n);
+    const numSplited = n.toString().split('').map(Number);
+    let sum = 0;
+    for (const num of numSplited) {
+      sum += Math.pow(num, 2);
+    }
+    n = sum;
+    if (set.has(n)) return false;
+  }
+  return true;
 };
 
-console.log(intersection(nums1, nums2));
+console.log(isHappy(22));
