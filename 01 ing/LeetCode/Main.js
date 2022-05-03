@@ -1,10 +1,14 @@
-const containsDuplicate = function (nums) {
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+const singleNumber = function (nums) {
   const map = new Map();
   for (const num of nums) {
-    if (map.has(num)) return true;
-    else map.set(num, num);
+    if (map.has(num)) map.set(num, map.get(num) + 1);
+    else map.set(num, 1);
   }
-  return false;
+  for (const num of nums) if (map.get(num) === 1) return num;
 };
 
-console.log(containsDuplicate([1, 2, 3, 1]));
+console.log(singleNumber([2, 2, 1]));
