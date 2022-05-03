@@ -1,14 +1,12 @@
-/**
- * @param {number[]} nums
- * @return {number}
- */
-const singleNumber = function (nums) {
-  const map = new Map();
-  for (const num of nums) {
-    if (map.has(num)) map.set(num, map.get(num) + 1);
-    else map.set(num, 1);
-  }
-  for (const num of nums) if (map.get(num) === 1) return num;
+const nums1 = [1, 2, 2, 1],
+  nums2 = [2, 2];
+
+const intersection = function (nums1, nums2) {
+  const set = new Set();
+  const intersection = new Set();
+  for (const num of nums1) set.add(num);
+  for (const num of nums2) if (set.has(num)) intersection.add(num, num);
+  return [...intersection];
 };
 
-console.log(singleNumber([2, 2, 1]));
+console.log(intersection(nums1, nums2));
