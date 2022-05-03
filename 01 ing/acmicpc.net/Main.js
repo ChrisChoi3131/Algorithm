@@ -6,41 +6,35 @@ const input = require('fs')
   .split('\n');
 //const input = require("fs").readFileSync('/dev/stdin').toString().trim().split("\n");
 const n = Number(input[0]);
-const visited = new Array(n).fill(false);
-const energies = input[1].split(' ').map(Number);
-let orders = [];
+const check_col = new Array(n).fill(false);
+const check_diag = new Array(2 * n - 1).fill(false);
+const check_antiDiag = new Array(2 * n - 1).fill(false);
+const visited = new Array(n).fill(0).map(() => new Array(n).fill(false));
 let ans = 0;
 go(0);
-
-function go(idx) {
-  if (idx === n - 2) {
-    const check = new Array(n).fill(false);
-    let energy = 0;
-    for (let i = 0; i < orders.length; i++) {
-      check[orders[i]] = true;
-      let [left, right] = [orders[i], orders[i]];
-      for (let j = orders[i] - 1; j >= 0; j--) {
-        if (check[j] === false) {
-          left = j;
-          break;
-        }
-      }
-      for (let j = orders[i] + 1; j < n; j++) {
-        if (check[j] === false) {
-          right = j;
-          break;
-        }
-      }
-      energy += energies[left] * energies[right];
+function go(row) {
+  if (row === n) {
+    ans++;
+    return;
+  }
+  for (let col = 0; col < n; col++) {
+    if (isVisitable(row, col)) {
+      check_col[col] = true;
+      check_diag[row + col] = true;
+      check_antiDiag[n - 1 - col + row] = true;
+      visited[row][col] = true;
+      go(row + 1);
+      visited[row][col] = false;
+      check_col[col] = false;
+      check_diag[row + col] = false;
+      check_antiDiag[n - 1 - col + row] = false;
     }
-    ans < energy ? (ans = energy) : null;
   }
-  for (let i = 1; i < n - 1; i++) {
-    if (visited[i]) continue;
-    orders[idx] = i;
-    visited[i] = true;
-    go(idx + 1);
-    visited[i] = false;
-  }
+}
+function isVisitable(row, col) {
+  if (check_col[col]) return false;
+  if (check_diag[row + col]) return false;
+  if (check_antiDiag[n - 1 - col + row]) return false;
+  return true;
 }
 console.log(ans);
