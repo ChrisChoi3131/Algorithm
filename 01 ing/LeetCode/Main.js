@@ -1,37 +1,10 @@
-class MyHashMap {
-  constructor() {
-    this.map = new Map();
+const containsDuplicate = function (nums) {
+  const map = new Map();
+  for (const num of nums) {
+    if (map.has(num)) return true;
+    else map.set(num, num);
   }
-}
-/**
- * @param {number} key
- * @param {number} value
- * @return {void}
- */
-MyHashMap.prototype.put = function (key, value) {
-  this.map.set(key, value);
+  return false;
 };
 
-/**
- * @param {number} key
- * @return {number}
- */
-MyHashMap.prototype.get = function (key) {
-  return this.map.get(key) !== undefined ? this.map.get(key) : -1;
-};
-
-/**
- * @param {number} key
- * @return {void}
- */
-MyHashMap.prototype.remove = function (key) {
-  this.map.delete(key);
-};
-
-/**
- * Your MyHashMap object will be instantiated and called as such:
- * var obj = new MyHashMap()
- * obj.put(key,value)
- * var param_2 = obj.get(key)
- * obj.remove(key)
- */
+console.log(containsDuplicate([1, 2, 3, 1]));
