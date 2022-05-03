@@ -1,21 +1,18 @@
-/**
- * @param {number} n
- * @return {boolean}
- */
+const nums = [3, 2, 4],
+  target = 6;
 
-const isHappy = function (n) {
-  const set = new Set();
-  while (n !== 1) {
-    set.add(n);
-    const numSplited = n.toString().split('').map(Number);
-    let sum = 0;
-    for (const num of numSplited) {
-      sum += Math.pow(num, 2);
-    }
-    n = sum;
-    if (set.has(n)) return false;
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+const twoSum = function (nums, target) {
+  const map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const compli = target - nums[i];
+    if (map.has(nums[i])) return [i, map.get(nums[i])];
+    else map.set(compli, i);
   }
-  return true;
 };
 
-console.log(isHappy(22));
+console.log(twoSum(nums, target));
