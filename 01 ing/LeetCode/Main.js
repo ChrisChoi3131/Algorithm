@@ -1,37 +1,37 @@
-class MyHashSet {
+class MyHashMap {
   constructor() {
-    this.set = new Map();
+    this.map = new Map();
   }
 }
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+MyHashMap.prototype.put = function (key, value) {
+  this.map.set(key, value);
+};
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+MyHashMap.prototype.get = function (key) {
+  return this.map.get(key) !== undefined ? this.map.get(key) : -1;
+};
 
 /**
  * @param {number} key
  * @return {void}
  */
-MyHashSet.prototype.add = function (key) {
-  this.set.set(key, key);
+MyHashMap.prototype.remove = function (key) {
+  this.map.delete(key);
 };
 
 /**
- * @param {number} key
- * @return {void}
- */
-MyHashSet.prototype.remove = function (key) {
-  this.set.delete(key);
-};
-
-/**
- * @param {number} key
- * @return {boolean}
- */
-MyHashSet.prototype.contains = function (key) {
-  return this.set.has(key);
-};
-
-/**
- * Your MyHashSet object will be instantiated and called as such:
- * var obj = new MyHashSet()
- * obj.add(key)
+ * Your MyHashMap object will be instantiated and called as such:
+ * var obj = new MyHashMap()
+ * obj.put(key,value)
+ * var param_2 = obj.get(key)
  * obj.remove(key)
- * var param_3 = obj.contains(key)
  */
