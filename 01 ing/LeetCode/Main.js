@@ -1,20 +1,22 @@
+class Logger {
+  constructor() {
+    this.map = new Map();
+  }
+}
+
 /**
- * @param {number[]} nums
- * @param {number} k
+ * @param {number} timestamp
+ * @param {string} message
  * @return {boolean}
  */
-// const nums = [1, 2, 3, 1, 2, 3],
-//   k = 2;
-const nums = [1, 2, 3, 1],
-  k = 3;
-
-const containsNearbyDuplicate = function (nums, k) {
-  const map = new Map();
-  for (let i = 0; i < nums.length; i++) {
-    if (map.has(nums[i]) && Math.abs(map.get(nums[i]) - i) <= k) {
+Logger.prototype.shouldPrintMessage = function (timestamp, message) {
+  if (this.map.get(message) === undefined) {
+    this.map.set(message, timestamp + 10);
+    return true;
+  } else {
+    if (timestamp >= this.map.get(message)) {
+      this.map.set(message, timestamp + 10);
       return true;
-    } else map.set(nums[i], i);
+    } else return false;
   }
-  return false;
 };
-console.log(containsNearbyDuplicate(nums, k));
