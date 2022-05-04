@@ -1,18 +1,25 @@
-const nums = [3, 2, 4],
-  target = 6;
-
 /**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
+ * @param {string[]} list1
+ * @param {string[]} list2
+ * @return {string[]}
  */
-const twoSum = function (nums, target) {
-  const map = new Map();
-  for (let i = 0; i < nums.length; i++) {
-    const compli = target - nums[i];
-    if (map.has(nums[i])) return [i, map.get(nums[i])];
-    else map.set(compli, i);
+const list1 = ['Shogun', 'Tapioca Express', 'Burger King', 'KFC'],
+  list2 = ['KFC', 'Shogun', 'Burger King'];
+// const list1 = ['Shogun', 'Tapioca Express', 'Burger King', 'KFC'],
+//   list2 = ['KFC', 'Burger King', 'Tapioca Express', 'Shogun'];
+const findRestaurant = function (list1, list2) {
+  const map1 = new Map(list1.map((menu, idx) => [menu, idx]));
+  const map2 = new Map(list2.map((menu, idx) => [menu, idx]));
+  const res = [];
+  for (const list of map1) {
+    const [menu, idx] = list;
+    if (map2.get(menu) !== undefined) {
+      const sumIdx = idx + map2.get(menu);
+      res[sumIdx] === undefined ? (res[sumIdx] = []) : null;
+      res[sumIdx].push(menu);
+    }
   }
+  for (const commonMenu of res) if (commonMenu) return commonMenu;
 };
 
-console.log(twoSum(nums, target));
+console.log(findRestaurant(list1, list2));
