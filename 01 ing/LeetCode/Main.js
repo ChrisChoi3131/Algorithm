@@ -1,55 +1,28 @@
-const nums = [1],
-  k = 1;
-
-const topKFrequent = function (nums, k) {
-  const heap = new Array(nums.length).fill({ cnt: 0 });
-  let idxHeap = 0;
-  const h_push = cntNum => {
-    heap[++idxHeap] = cntNum;
-    for (let i = idxHeap; i > 1; i = Math.floor(i / 2)) {
-      const cnt = heap[i].cnt;
-      const cntParent = heap[Math.floor(i / 2)].cnt;
-      if (cnt > cntParent) {
-        const tmp = heap[i];
-        heap[i] = heap[Math.floor(i / 2)];
-        heap[Math.floor(i / 2)] = tmp;
-      } else break;
-    }
-  };
-  const h_pop = () => {
-    const cntNum = heap[1];
-    heap[1] = heap[idxHeap];
-    heap[idxHeap--] = { cnt: 0 };
-    for (let i = 1; i < idxHeap; ) {
-      if (heap[i].cnt > heap[i * 2].cnt && heap[i].cnt > heap[i * 2 + 1].cnt) break;
-      else if (heap[i * 2].cnt > heap[i * 2 + 1].cnt) {
-        const tmp = heap[i];
-        heap[i] = heap[i * 2];
-        heap[i * 2] = tmp;
-        i = i * 2;
-      } else {
-        const tmp = heap[i];
-        heap[i] = heap[i * 2 + 1];
-        heap[i * 2 + 1] = tmp;
-        i = i * 2 + 1;
-      }
-    }
-    return cntNum;
-  };
-
-  const cntNums = new Map();
-  nums.forEach(num => {
-    if (cntNums.has(num)) cntNums.set(num, cntNums.get(num) + 1);
-    else cntNums.set(num, 1);
-  });
-  cntNums.forEach((cnt, num) => {
-    h_push({ num, cnt });
-  });
-  const ans = [];
-  for (let i = 0; i < k; i++) {
-    ans.push(h_pop().num);
+class TwoSum {
+  constructor() {
+    this.nums = new Map();
   }
-  return ans;
+}
+
+TwoSum.prototype.add = function (number) {
+  if (this.nums.has(number)) this.nums.set(number, this.nums.get(number) + 1);
+  else this.nums.set(number, 1);
 };
 
-console.log(topKFrequent(nums, k));
+TwoSum.prototype.find = function (value) {
+  for (const num of this.nums.keys()) {
+    const complement = value - num;
+    if (complement !== num) {
+      if (this.nums.has(complement)) return true;
+    } else {
+      if (this.nums.get(complement) > 1) return true;
+    }
+  }
+  return false;
+};
+const twoSum = new TwoSum();
+console.log(twoSum.add(1));
+console.log(twoSum.add(3));
+console.log(twoSum.add(5));
+console.log(twoSum.find(4));
+console.log(twoSum.find(7));
