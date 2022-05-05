@@ -1,28 +1,32 @@
-class TwoSum {
+class RandomizedSet {
   constructor() {
-    this.nums = new Map();
+    this.set = new Set();
   }
 }
-
-TwoSum.prototype.add = function (number) {
-  if (this.nums.has(number)) this.nums.set(number, this.nums.get(number) + 1);
-  else this.nums.set(number, 1);
-};
-
-TwoSum.prototype.find = function (value) {
-  for (const num of this.nums.keys()) {
-    const complement = value - num;
-    if (complement !== num) {
-      if (this.nums.has(complement)) return true;
-    } else {
-      if (this.nums.get(complement) > 1) return true;
-    }
+RandomizedSet.prototype.insert = function (val) {
+  if (this.set.has(val)) return false;
+  else {
+    this.set.add(val);
+    return true;
   }
-  return false;
 };
-const twoSum = new TwoSum();
-console.log(twoSum.add(1));
-console.log(twoSum.add(3));
-console.log(twoSum.add(5));
-console.log(twoSum.find(4));
-console.log(twoSum.find(7));
+
+RandomizedSet.prototype.remove = function (val) {
+  if (this.set.has(val)) {
+    this.set.delete(val);
+    return true;
+  } else return false;
+};
+
+RandomizedSet.prototype.getRandom = function () {
+  const randomIdx = Math.floor(Math.random() * [...this.set.keys()].length);
+  return [...this.set.keys()][randomIdx];
+};
+const randomizedSet = new RandomizedSet();
+console.log(randomizedSet.insert(1));
+console.log(randomizedSet.remove(2));
+console.log(randomizedSet.insert(2));
+console.log(randomizedSet.getRandom());
+console.log(randomizedSet.remove(1));
+console.log(randomizedSet.insert(2));
+console.log(randomizedSet.getRandom());
