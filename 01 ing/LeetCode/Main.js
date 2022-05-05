@@ -1,29 +1,36 @@
-/**
- * @param {string[]} strings
- * @return {string[][]}
- */
-const strings = ['bac', 'bcd', 'acef', 'xyz', 'az', 'ba', 'a', 'z'];
+const board = [
+  ['8', '3', '.', '.', '7', '.', '.', '.', '.'],
+  ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+  ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+  ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+  ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+  ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+  ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+  ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+  ['.', '.', '.', '.', '8', '.', '.', '7', '9'],
+];
 
-const generateKey = function (str) {
-  const charCodes = str.split('').map(char => char.charCodeAt());
-  while (charCodes[0] !== 0) {
-    for (let i = 0; i < charCodes.length; i++) {
-      charCodes[i]--;
-      if (charCodes[i] === -1) charCodes[i] = 25;
+/**
+ * @param {character[][]} board
+ * @return {boolean}
+ */
+const isValidSudoku = function (board) {
+  const rows = new Array(9).fill(0).map(() => new Set());
+  const cols = new Array(9).fill(0).map(() => new Set());
+  const subBoxes = new Array(9).fill(0).map(() => new Set());
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] === '.') continue;
+      const num = Number(board[i][j]);
+      const IdxSubBox = 3 * Math.floor(i / 3) + Math.floor(j / 3);
+      if (rows[i].has(num) || cols[j].has(num) || subBoxes[IdxSubBox].has(num)) return false;
+      else {
+        rows[i].add(num);
+        cols[j].add(num);
+        subBoxes[IdxSubBox].add(num);
+      }
     }
   }
-  return charCodes.join('#');
+  return true;
 };
-const groupStrings = function (strings) {
-  const groupShiftedStrs = new Map();
-  strings.forEach(str => {
-    const key = generateKey(str);
-    if (groupShiftedStrs.has(key)) {
-      const value = groupShiftedStrs.get(key);
-      value.push(str);
-      groupShiftedStrs.set(key, value);
-    } else groupShiftedStrs.set(key, [str]);
-  });
-  return [...groupShiftedStrs.values()];
-};
-console.log(groupStrings(strings));
+console.log(isValidSudoku(board));
