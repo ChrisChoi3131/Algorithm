@@ -1,11 +1,19 @@
-/**
- * @param {number[]} nums
- * @return {number}
- */
-const findNumbers = function (nums) {
-  let cntEvenNumber = 0;
-  nums.forEach(num => (num.toString().length % 2 === 0 ? cntEvenNumber++ : null));
-  return cntEvenNumber;
+const sortedSquares = function (nums) {
+  let left = 0;
+  let right = nums.length - 1;
+  const arrSortedSquares = new Array(nums.length);
+  for (let i = nums.length - 1; i >= 0; i--) {
+    if (Math.abs(nums[left]) > Math.abs(nums[right])) {
+      arrSortedSquares[i] = nums[left] * nums[left];
+      left++;
+    } else {
+      arrSortedSquares[i] = nums[right] * nums[right];
+      right--;
+    }
+  }
+  return arrSortedSquares;
 };
 
-console.log(findNumbers([12, 345, 2, 6, 7896]));
+const nums = [-4, -1, 0, 0, 3, 10];
+
+console.log(sortedSquares(nums));
