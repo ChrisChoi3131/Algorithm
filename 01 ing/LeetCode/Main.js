@@ -1,19 +1,18 @@
-const sortedSquares = function (nums) {
-  let left = 0;
-  let right = nums.length - 1;
-  const arrSortedSquares = new Array(nums.length);
-  for (let i = nums.length - 1; i >= 0; i--) {
-    if (Math.abs(nums[left]) > Math.abs(nums[right])) {
-      arrSortedSquares[i] = nums[left] * nums[left];
-      left++;
-    } else {
-      arrSortedSquares[i] = nums[right] * nums[right];
-      right--;
+/**
+ * @param {number[]} arr
+ * @return {void} Do not return anything, modify arr in-place instead.
+ */
+
+const arr = [1, 0, 2, 3, 0, 4, 5, 0];
+
+const duplicateZeros = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === 0) {
+      arr.splice(arr.length - 1);
+      arr.splice(i, 0, 0);
+      i++;
     }
   }
-  return arrSortedSquares;
+  return arr;
 };
-
-const nums = [-4, -1, 0, 0, 3, 10];
-
-console.log(sortedSquares(nums));
+console.log(duplicateZeros(arr));
