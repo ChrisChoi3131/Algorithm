@@ -2,16 +2,10 @@
  * @param {number[]} nums
  * @return {number}
  */
-const findMaxConsecutiveOnes = function (nums) {
-  let maxNumConsecutive = 0,
-    numConsecutive = 0;
-
-  nums.forEach(num => {
-    if (num === 1) numConsecutive++;
-    else numConsecutive = 0;
-    if (numConsecutive > maxNumConsecutive) maxNumConsecutive = numConsecutive;
-  });
-  return maxNumConsecutive;
+const findNumbers = function (nums) {
+  let cntEvenNumber = 0;
+  nums.forEach(num => (num.toString().length % 2 === 0 ? cntEvenNumber++ : null));
+  return cntEvenNumber;
 };
 
-console.log(findMaxConsecutiveOnes([1, 0, 1, 1, 1, 0, 1]));
+console.log(findNumbers([12, 345, 2, 6, 7896]));
