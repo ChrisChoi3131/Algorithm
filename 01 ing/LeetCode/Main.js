@@ -1,22 +1,17 @@
-const arr = [1, 2, 3];
-
-const validMountainArray = function (arr) {
-  let isArrivedTop = false;
-  let idxTop = 0;
-  for (let i = 1; i < arr.length; i++) {
-    if (isArrivedTop) {
-      if (arr[i - 1] > arr[i]) continue;
-      else if (arr[i - 1] <= arr[i]) return false;
-    } else {
-      if (arr[i - 1] < arr[i]) continue;
-      else if (arr[i - 1] > arr[i]) {
-        isArrivedTop = true;
-        idxTop = i - 1;
-      } else return false;
-    }
+/**
+ * @param {number[]} arr
+ * @return {number[]}
+ */
+var replaceElements = function (arr) {
+  let maxNumRight = arr[arr.length - 1];
+  arr[arr.length - 1] = -1;
+  for (let i = arr.length - 2; i >= 0; i--) {
+    const tmp = arr[i];
+    arr[i] = maxNumRight;
+    if (tmp > maxNumRight) maxNumRight = tmp;
   }
-  if (idxTop === 0) return false;
-  else return true;
+  return arr;
 };
 
-console.log(validMountainArray(arr));
+const arr = [400];
+console.log(replaceElements(arr));
