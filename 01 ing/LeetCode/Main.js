@@ -1,17 +1,21 @@
-/**
- * @param {number[]} arr
- * @return {number[]}
- */
-var replaceElements = function (arr) {
-  let maxNumRight = arr[arr.length - 1];
-  arr[arr.length - 1] = -1;
-  for (let i = arr.length - 2; i >= 0; i--) {
-    const tmp = arr[i];
-    arr[i] = maxNumRight;
-    if (tmp > maxNumRight) maxNumRight = tmp;
-  }
-  return arr;
-};
+const nums = [0, 1];
 
-const arr = [400];
-console.log(replaceElements(arr));
+const moveZeroes = function (nums) {
+  let pointerFirst = 0;
+  let pointerSecond = 0;
+  while (pointerFirst !== nums.length && pointerSecond !== nums.length) {
+    if (nums[pointerFirst] === 0 && nums[pointerSecond] === 0) {
+      pointerSecond++;
+    } else if (nums[pointerFirst] === 0 && nums[pointerSecond] !== 0) {
+      nums[pointerFirst] = nums[pointerSecond];
+      nums[pointerSecond] = 0;
+    } else if (nums[pointerFirst] !== 0 && nums[pointerSecond] === 0) {
+      pointerFirst++;
+    } else {
+      pointerFirst++;
+      pointerSecond < nums.length - 1 ? pointerSecond++ : null;
+    }
+  }
+  return nums;
+};
+moveZeroes(nums);
