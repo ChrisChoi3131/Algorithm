@@ -1,18 +1,21 @@
-const nums = [1, 0, 1, 1, 0, 1];
-
-const findMaxConsecutiveOnes = function (nums) {
-  const d = new Array(nums.length).fill(0).map(() => new Array(2).fill(0));
-  d[0][0] = nums[0];
-  d[0][1] = 1;
-  for (let i = 1; i < nums.length; i++) {
-    if (nums[i] === 1) {
-      d[i][0] = d[i - 1][0] + 1;
-      d[i][1] = d[i - 1][1] + 1;
-    } else {
-      d[i][0] = 0;
-      d[i][1] = d[i - 1][0] + 1;
+const heights = [1, 2, 3, 4, 5];
+const heightChecker = function (heights) {
+  const map = new Map();
+  heights.forEach(height => {
+    if (map.has(height)) map.set(height, map.get(height) + 1);
+    else map.set(height, 1);
+  });
+  let idx = 0;
+  let numOfIndices = 0;
+  while (idx !== heights.length) {
+    const lowestHeight = Math.min(...map.keys());
+    const numLowestHeight = map.get(lowestHeight);
+    for (let i = idx; i < numLowestHeight + idx; i++) {
+      if (lowestHeight !== heights[i]) numOfIndices++;
     }
+    idx += numLowestHeight;
+    map.delete(lowestHeight);
   }
-  return Math.max(...d.flat());
+  return numOfIndices;
 };
-findMaxConsecutiveOnes(nums);
+heightChecker(heights);
