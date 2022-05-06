@@ -1,21 +1,14 @@
-const heights = [1, 2, 3, 4, 5];
-const heightChecker = function (heights) {
-  const map = new Map();
-  heights.forEach(height => {
-    if (map.has(height)) map.set(height, map.get(height) + 1);
-    else map.set(height, 1);
-  });
-  let idx = 0;
-  let numOfIndices = 0;
-  while (idx !== heights.length) {
-    const lowestHeight = Math.min(...map.keys());
-    const numLowestHeight = map.get(lowestHeight);
-    for (let i = idx; i < numLowestHeight + idx; i++) {
-      if (lowestHeight !== heights[i]) numOfIndices++;
-    }
-    idx += numLowestHeight;
-    map.delete(lowestHeight);
+const digits = [1, 2, 3];
+const plusOne = function (digits) {
+  let doAdd = true;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (doAdd) digits[i]++;
+    else continue;
+    if (digits[i] >= 10) {
+      digits[i] -= 10;
+    } else doAdd = false;
   }
-  return numOfIndices;
+  if (doAdd) return [1, ...digits];
+  else return [...digits];
 };
-heightChecker(heights);
+plusOne(digits);
