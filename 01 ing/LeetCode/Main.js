@@ -1,11 +1,22 @@
-const arr = [3, 1, 7, 11];
-// const arr = [10, 2, 5, 3];
+const arr = [1, 2, 3];
 
-const checkIfExist = function (arr) {
-  const map = new Map(arr.map((num, idx) => [num, idx]));
-  for (let i = 0; i < arr.length; i++) {
-    if (map.has(arr[i] * 2) && map.get(arr[i] * 2) !== i) return true;
+const validMountainArray = function (arr) {
+  let isArrivedTop = false;
+  let idxTop = 0;
+  for (let i = 1; i < arr.length; i++) {
+    if (isArrivedTop) {
+      if (arr[i - 1] > arr[i]) continue;
+      else if (arr[i - 1] <= arr[i]) return false;
+    } else {
+      if (arr[i - 1] < arr[i]) continue;
+      else if (arr[i - 1] > arr[i]) {
+        isArrivedTop = true;
+        idxTop = i - 1;
+      } else return false;
+    }
   }
-  return false;
+  if (idxTop === 0) return false;
+  else return true;
 };
-console.log(checkIfExist(arr));
+
+console.log(validMountainArray(arr));
