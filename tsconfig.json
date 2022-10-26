@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "esModuleInterop" : true,
+    "outDir": "01 ing/acmicpc.net/out",
+    "sourceMap": true,
+  },
+  "includes" : ["01 ing/acmicpc.net/*"]
+}

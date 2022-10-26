@@ -17,6 +17,14 @@
       "type": "node"
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "TypeScript",
+      "program": "${file}",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },    
+    {
       "type": "lldb",
       "request": "launch",
       "name": "C++ debug",
