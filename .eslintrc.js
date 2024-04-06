@@ -1,7 +1,6 @@
 module.exports = {
   env: {
     node: true,
-    es2021: true,
   },
   parserOptions: {
     ecmaVersion: 12,
@@ -14,8 +13,7 @@ module.exports = {
     'prettier/prettier': [
       'error',
       {
-        printWidth: 140,
-        singleQuote: true,
+        printWidth: 140
         useTabs: false,
         tabWidth: 2,
         arrowParens: 'avoid',

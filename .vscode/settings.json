@@ -1,5 +1,6 @@
 {
   "files.associations": {
     "iostream": "cpp"
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

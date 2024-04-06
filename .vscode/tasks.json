@@ -5,12 +5,7 @@
       "type": "shell",
       "label": "C bulid for clang",
       "command": "clang",
-      "args": [
-        "-g",
-        "${file}",
-        "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
-      ],
+      "args": ["-g", "${file}", "-o", "${fileDirname}/${fileBasenameNoExtension}"],
       "options": {
         "cwd": "${workspaceRoot}"
       },
@@ -27,14 +22,7 @@
       "type": "shell",
       "label": "C++ bulid for clang++",
       "command": "clang++",
-      "args": [
-        "-std=c++17",
-        "-stdlib=libc++",
-        "-g",
-        "${file}",
-        "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
-      ],
+      "args": ["-std=c++17", "-stdlib=libc++", "-g", "${file}", "-o", "${fileDirname}/${fileBasenameNoExtension}"],
       "options": {
         "cwd": "${workspaceRoot}"
       },
@@ -54,6 +42,16 @@
       "group": "test",
       "presentation": {
         "clear": true
+      }
+    },
+    {
+      "label": "tsc: build - tsconfig.json",
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": ["$tsc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
       }
     }
   ]

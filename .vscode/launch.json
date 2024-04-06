@@ -6,13 +6,14 @@
       "name": "Python",
       "request": "launch",
       "program": "${file}",
-      "console": "internalConsole",
+      "console": "internalConsole"
       // "preLaunchTask": "python execute"
     },
     {
       "name": "JavaScript",
       "program": "${file}",
       "request": "launch",
+      "outputCapture": "std",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
     },
@@ -23,7 +24,7 @@
       "program": "${file}",
       "preLaunchTask": "tsc: build - tsconfig.json",
       "outFiles": ["${workspaceFolder}/out/**/*.js"]
-    },    
+    },
     {
       "type": "lldb",
       "request": "launch",
@@ -32,6 +33,14 @@
       "args": [],
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "C++ bulid for clang++"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/01 ing/LeetCode/Main.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
     }
   ]
 }
