@@ -8,7 +8,26 @@ export class TreeNode {
     this.right = right === undefined ? null : right;
   }
 }
-function createNode(val: number, left?: TreeNode | null, right?: TreeNode | null): TreeNode {
-  return new TreeNode(val, left, right);
+export function createBinaryTreeFromArr(arr): TreeNode | null {
+  if (!arr || !arr.length) return null;
+  const root: TreeNode = new TreeNode(arr[0]);
+  let i = 1;
+  const queue = [root];
+  while (i < arr.length && queue) {
+    const node = queue.pop();
+    if (arr[i]) {
+      node.left = new TreeNode(arr[i]);
+      queue.unshift(node.left);
+    }
+    i++;
+    if (i < arr.length && arr[i]) {
+      node.right = new TreeNode(arr[i]);
+      queue.unshift(node.right);
+    }
+    i++;
+  }
+  return root;
 }
-export const tests: { input: TreeNode | null; expected: string }[] = [{ input: createNode(1, createNode(2), createNode(3, createNode(4), createNode(5))), expected: createNode(1, createNode(2), createNode(3, createNode(4), createNode(5))) }];
+
+const a = '1';
+const b = 1;

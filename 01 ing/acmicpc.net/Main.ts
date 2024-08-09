@@ -4,34 +4,20 @@ const input: string[] = require('fs')
   .toString()
   .trim()
   .split('\n');
+solution();
 
-const [, m]: number[] = input[0].split(' ').map(Number);
-const temps: number[] = input[1]
-  .split(' ')
-  .map(Number)
-  .sort((a, b) => a - b);
-
-const count = temps.reduce((acc, num) => {
-  acc[num] = (acc[num] || 0) + 1;
-  return acc;
-}, {});
-const nums: number[] = Object.keys(count).map(Number);
-const n: number = nums.length;
-const bufferForNum: number[] = [];
-const output: string[] = [];
-getSequence(0, 0);
-console.log(output.join('\n'));
-
-function getSequence(idxSeq: number, start: number) {
-  if (idxSeq === m) {
-    output.push(bufferForNum.join(' '));
-    return;
+function solution(): void {
+  const [n, s]: number[] = input[0].split(' ').map(Number);
+  const nums: number[] = input[1].split(' ').map(Number);
+  let ans: number = 0;
+  for (let i = 1; i < 1 << n; i++) {
+    let sum = 0;
+    for (let j = 0; j < n; j++) {
+      if (i & (1 << j)) {
+        sum += nums[j];
+      }
+    }
+    if (sum === s) ans++;
   }
-  for (let idxNum = start; idxNum < n; idxNum++) {
-    if (count[nums[idxNum]] === 0) continue;
-    count[nums[idxNum]]--;
-    bufferForNum[idxSeq] = nums[idxNum];
-    getSequence(idxSeq + 1, idxNum);
-    count[nums[idxNum]]++;
-  }
+  console.log(ans);
 }

@@ -1,3 +1,6 @@
-const a = true;
-const b = true;
-console.log(a + b);
+const arr = [1, 2, 3, 4]
+
+
+for (const num of arr) {
+  return console.log(num);
+}
